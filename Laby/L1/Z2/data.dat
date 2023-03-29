@@ -1,3 +1,4 @@
+/*  Gabriel Budziński 254609*/
 data;
 
 set Cities := Opole Brzeg Nysa Prudnik Strzelce Kozle Raciborz;
@@ -26,42 +27,6 @@ Prudnik             0       10
 Strzelce            5       0
 Kozle               0       0
 Raciborz            0       0;
-
-# param deficit:      Typ_I   Typ_II :=
-# Opole               0       2
-# Brzeg               6       0
-# Nysa                0       0
-# Prudnik             4       0
-# Strzelce            0       4
-# Kozle               8       2
-# Raciborz            0       1;
-
-# param surplus:      Typ_I   Typ_II :=
-# Opole               7       0
-# Brzeg               0       1
-# Nysa                6       2
-# Prudnik             0       6
-# Strzelce            5       0
-# Kozle               0       0
-# Raciborz            0       0;
-
-# param deficit:=
-# Opole               2
-# Brzeg               10
-# Nysa                0
-# Prudnik             4
-# Strzelce            4
-# Kozle               10
-# Raciborz            1;
-
-# param surplus:=
-# Opole               7
-# Brzeg               1
-# Nysa                8
-# Prudnik             10
-# Strzelce            5
-# Kozle               0
-# Raciborz            0;
 
 param distance:     Opole   Brzeg   Nysa    Prudnik     Strzelce   Kozle   Raciborz :=
 Opole               0       43.4    57.5    51.1        33.9       52.6    78.9
