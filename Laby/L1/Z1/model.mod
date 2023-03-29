@@ -1,3 +1,4 @@
+/*  Gabriel Budziński 254609*/
 /* Parameters */
 
 param N;
@@ -18,12 +19,6 @@ minimize CostFun: sum{i in {1..N}} X[i]*C[i];
 s.t. matrix_contraints{i in {1..N}}: sum{j in {1..N}} A[i,j] * X[j] = B[i];
 
 solve;
-
-# display X;
-
-# display '-----------more elegant way -------------';
-# display 'CostFun =', sum{i in {1..N}} X[i]*C[i];
-# display{i in {1..N}} X[i];
 
 /* output to file */
 
