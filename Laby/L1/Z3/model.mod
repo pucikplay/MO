@@ -14,6 +14,7 @@ param sulphur_content_B1;
 param sulphur_content_B2;
 param sulphur_content_B1_K;
 param sulphur_content_B2_K;
+param sulphur_content_margin;
 
 param efficiency{Units, Fuels};
 
@@ -81,13 +82,13 @@ s.t. efficiency_K_leftovers:    K_leftovers = (D1_destillate_to_K + D2_destillat
 s.t. demand_petrol_:     D1_petrol + D2_petrol >= demand_petrol;
 s.t. demand_oil_home_:   D1_oil_home + D2_oil_home + K_oil >= demand_oil_home;
 s.t. demand_oil_heavy_:  D1_oil_heavy + D1_destillate_out + D1_leftovers + 
-                        D2_oil_heavy + D2_destillate_out + D2_leftovers + 
-                        K_leftovers >= demand_oil_heavy;
+                         D2_oil_heavy + D2_destillate_out + D2_leftovers + 
+                         K_leftovers >= demand_oil_heavy;
 
 s.t. sulphur_content_oil_home:  D1_oil_home*sulphur_content_B1 +
                                 D2_oil_home*sulphur_content_B2 +
                                 (D1_destillate_to_K*sulphur_content_B1_K + 
-                                 D2_destillate_to_K*sulphur_content_B2_K)*efficiency['Krackator','Oil'] <= 0.5;
+                                 D2_destillate_to_K*sulphur_content_B2_K)*efficiency['Krackator','Oil'] <= sulphur_content_margin;
 
 solve;
 

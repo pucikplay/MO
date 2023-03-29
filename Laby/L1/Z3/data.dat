@@ -3,7 +3,7 @@ data;
 
 /* Sets */
 
-set Fuels := Benzyna Olej Destylat Resztki;
+set Fuels := Petrol Oil Destillate Leftovers;
 set Units := D_one D_two Krackator;
 
 /* Parameters */
@@ -15,11 +15,12 @@ param sulphur_content_B1 :=     0.2;
 param sulphur_content_B2 :=     1.2;
 param sulphur_content_B1_K :=   0.3;
 param sulphur_content_B2_K :=   2.5;
+param sulphur_content_margin := 0.5;
 
 param efficiency:   Petrol     Oil    Destillate    Leftovers :=
 D_one               0.15       0.4    0.15          0.15
 D_two               0.1        0.35   0.2           0.25
-Krackator           0.5        0.2    0.0           0.26;
+Krackator           0.5        0.2    0.0           0.06;
 
 param destilling_cost_D1 := 10;
 param destilling_cost_D2 := 10;
