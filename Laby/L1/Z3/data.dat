@@ -1,33 +1,32 @@
 /*  Gabriel Budziński 254609*/
 data;
 
-# set Fuel_types := Benzyna Olej Destylat Resztki;
-# set Destiller_units := Destylator_1 Destylator_2 Krakator;
-# set Oil_types := B_one B_two;
+/* Sets */
 
-# /* Parameters */
+set Fuels := Benzyna Olej Destylat Resztki;
+set Units := D_one D_two Krackator;
 
-param price := 
-B_one   1300
-B_two   1500;
+/* Parameters */
 
-param sulphur_content :=
-B_one   0.2
-B_two   1.2;
+param price_B1 := 1300;
+param price_B2 := 1500;
+
+param sulphur_content_B1 :=     0.2;
+param sulphur_content_B2 :=     1.2;
+param sulphur_content_B1_K :=   0.3;
+param sulphur_content_B2_K :=   2.5;
 
 param efficiency:   Petrol     Oil    Destillate    Leftovers :=
 D_one               0.15       0.4    0.15          0.15
 D_two               0.1        0.35   0.2           0.25
 Krackator           0.5        0.2    0.0           0.26;
 
-# param destilling_cost :=
-# Destylator_1    10
-# Destylator_2    10
-# Krakator        20;
+param destilling_cost_D1 := 10;
+param destilling_cost_D2 := 10;
+param destilling_cost_K :=  20;
 
-# param demand :=
-# Benzyna     200000
-# Olej        400000
-# Resztki     250000
+param demand_petrol :=      200000;
+param demand_oil_home :=    400000;
+param demand_oil_heavy :=   250000;
 
 end;
