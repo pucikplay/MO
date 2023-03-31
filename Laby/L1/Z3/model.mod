@@ -79,20 +79,20 @@ s.t. efficiency_K_petrol:       K_petrol = (D1_destillate_to_K + D2_destillate_t
 s.t. efficiency_K_oil:          K_oil = (D1_destillate_to_K + D2_destillate_to_K)*efficiency['Krackator','Oil'];
 s.t. efficiency_K_leftovers:    K_leftovers = (D1_destillate_to_K + D2_destillate_to_K)*efficiency['Krackator','Leftovers'];
 
-s.t. demand_petrol_:     D1_petrol + D2_petrol >= demand_petrol;
+s.t. demand_petrol_:     D1_petrol + D2_petrol + K_petrol >= demand_petrol;
 s.t. demand_oil_home_:   D1_oil_home + D2_oil_home + K_oil >= demand_oil_home;
 s.t. demand_oil_heavy_:  D1_oil_heavy + D1_destillate_out + D1_leftovers + 
                          D2_oil_heavy + D2_destillate_out + D2_leftovers + 
                          K_leftovers >= demand_oil_heavy;
 
-s.t. sulphur_content_oil_home:  D1_oil_home*sulphur_content_B1 +
-                                D2_oil_home*sulphur_content_B2 +
-                                (D1_destillate_to_K*sulphur_content_B1_K + 
-                                 D2_destillate_to_K*sulphur_content_B2_K)*efficiency['Krackator','Oil'] <= sulphur_content_margin;
+s.t. sulphur_content_oil_home:  
+    D1_oil_home*sulphur_content_B1 + D2_oil_home*sulphur_content_B2 + K_oil <= (D1_oil_home + D2_oil_home + K_oil)*sulphur_content_margin;
 
 solve;
 
-display B1_bought;
-display B2_bought;
+printf "Zakup B1 & %.3f t\\\\\\hline\n", B1_bought > "output.txt";
+printf "Zakup B2 & %.3f t\\\\\\hline\n", B2_bought >> "output.txt";
+printf "Destylat do krakowania & %.3f t\\\\\\hline\n", D1_destillate_to_K >> "output.txt";
+printf "Koszt & %.2f \\$\\\\\\hline\n", Cost >> "output.txt";
 
 end;

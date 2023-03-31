@@ -1,0 +1,4 @@
+Zakup B1 & 1026030.369 t\\\hline
+Zakup B2 & 0.000 t\\\hline
+Destylat do krakowania & 92190.889 t\\\hline
+Koszt & 1345943600.87 \$\\\hline

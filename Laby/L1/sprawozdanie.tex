@@ -50,7 +50,7 @@ n & $||x-\tilde{x}||_2/||x||_2$\\\hline
 \end{tabular}
 \end{table}
 
-Jak widzimy, błąd względny jest niewielki dla $x=2$, ale rośnie coraz szybciej i dla $x=10$ jest już ponad 1\%. Z dokładnością do co najmniej dwóch cyfr można obliczyć dla $n \leq 7$.
+Jak widzimy, błąd względny jest niewielki dla $x=2$, ale rośnie coraz szybciej i dla $x=10$ jest już ponad 1\%. Z dokładnością do co najmniej dwóch cyfr można obliczyć dla $n \leq 9$.
 
 \section{Zadanie 2}
 \subsection{Opis Modelu}
@@ -60,21 +60,24 @@ W modelu mamy trójwymiarową macierz zmiennych decyzyjnych $x \in \mathbb{R}^{n
 Zgodnie z treścią zadania zaprogramowano trzy ograniczenia:
 \begin{itemize}
 	\item Z miasta nie może wyjechać więcej dźwigów typu $k$ niż jest ich w nadmiarze (dwuwymiarowa macierz $s \in \mathbb{N}^{n\times 2}$, zatem
-	\[(\forall i \in {0,\dots,n-1}, k \in \{I,II\}) \left(\sum_{j=0}^{n-1}{x_{ijk} \leq s_{ik}}\right)\]
+	\[(\forall i \in \{1,\dots,n\}, k \in \{I,II\}) \left(\sum_{j=1}^{n-1}{x_{ijk} \leq s_{ik}}\right)\]
 	\item Każde miasto powinno dostać co najmniej tyle dźwigów typu II ile jest deficytu (dwuwymiarowa macierz $d \in \mathbb{N}^{n\times 2}$)
-	\[(\forall i \in {0,\dots,n-1}) \left(\sum_{j=0}^{n-1}{x_{jiII} \geq d_{iII}}\right)\]
+	\[(\forall i \in \{1,\dots,n\}) \left(\sum_{j=1}^{n}{x_{jiII} \geq d_{iII}}\right)\]
 	\item Suma wszystkich dźwigów przetransportowanych do miasta powinna być równa co najmniej sumie deficytów wszystkich typów
-	\[(\forall i \in {0,\dots,n-1}) \left(\sum_{j=0,k=I}^{n-1,II}{x_{jik}} \geq \sum_{k=I}^{II}{d_{ik}}\right)\]
+	\[(\forall i \in \{1,\dots,n\}) \left(\sum_{j=1,k=I}^{n,II}{x_{jik}} \geq \sum_{k=I}^{II}{d_{ik}}\right)\]
 \end{itemize}
 \subsubsection{Funkcja celu}
-Funkcją celu jest koszt transportu dźwigów pomiędzy miastami, który należy zminimalizować. Do rozwiązania modelu wprowadzono odległości między podanymi miastami pobrane z Google Maps.
+Funkcją celu jest koszt transportu dźwigów pomiędzy miastami, który należy zminimalizować. 
+\[(\forall i,j \in \{1,\dots,n\}, k \in \{I,II\}) \left(\sum{x_{ijk} \cdot m_k}\right)\]
+gdzie $m$ to wektor współczynników kosztów transportu.
+Do rozwiązania modelu wprowadzono odległości między podanymi miastami pobrane z Google Maps.
 \subsection{Wyniki i interpretacja}
 
 W poniższych tabelach przedstawiono obliczone wartości zmiennych decyzyjnych. W kolumnach wypisano miasta do których transportowane były dźwigi, a w wierszach te, z których te dźwigi pochodziły.
 
 \begin{table}[H]
 \centering
-\begin{tabular}{l|c c c c c c c }
+\begin{tabular}{l|c c c c c c c}
  & Opole & Brzeg & Nysa & Prudnik & Strzelce & Koźle & Racibórz\\\hline
 Opole & - & 4 & - & - & - & 3 & -\\\hline
 Brzeg & - & - & - & - & - & - & -\\\hline
@@ -107,9 +110,64 @@ Ograniczenie całkowitoliczbowości nie jest konieczne, ponieważ model zwraca t
 \section{Zadanie 3}
 \subsection{Opis Modelu}
 \subsubsection{Zmienne decyzyjne}
+W modelu wykorzystano zmienne odpowiadające grotom każdej ze strzałek na rysunku z polecenia.
+\begin{itemize}
+	\item $B_1,B_2$ - ilość zakupionej ropy każdego z rodzajów w $t$,
+	\item ${D_1}_p,{D_1}_o,{D_1}_d,{D_1}_l,{D_2}_p,{D_2}_o,{D_2}_d,{D_2}_l,K_p,K_o,K_l$ - ilość produktów destylacji dla każdej z jednostek w $t$,
+	\item ${{D_1}_o}_{home},{{D_1}_o}_{heavy},{{D_1}_d}_K,{{D_1}_d}_{out},{{D_2}_o}_{home},{{D_2}_o}_{heavy},{{D_2}_d}_K,{{D_2}_d}_{out}$ - ilość produktów po rozdzieleniu w węzłach podana w $t$,
+\end{itemize}
 \subsubsection{Ograniczenia}
+Zgodnie z treścią zadania zaprogramowano ograniczenia:
+\begin{itemize}
+	\item Ograniczenia związane z wydajnością procesów (gdzie $e$ to macierz wydajności):
+	\begin{itemize}
+		\item[$\cdot$] ${D_1}_p = B_1 \cdot e[d1,p]$
+		\item[$\cdot$] ${D_1}_o = B_1 \cdot e[d1,o]$
+		\item[$\cdot$] ${D_1}_d = B_1 \cdot e[d1,d]$
+		\item[$\cdot$] ${D_1}_l = B_1 \cdot e[d1,l]$
+		\item[$\cdot$] ${D_2}_p = B_1 \cdot e[d2,p]$
+		\item[$\cdot$] ${D_2}_o = B_1 \cdot e[d2,o]$
+		\item[$\cdot$] ${D_2}_d = B_1 \cdot e[d2,d]$
+		\item[$\cdot$] ${D_2}_l = B_1 \cdot e[d2,l]$
+		\item[$\cdot$] ${K}_p = B_1 \cdot e[k,p]$
+		\item[$\cdot$] ${K}_o = B_1 \cdot e[k,o]$
+		\item[$\cdot$] ${K}_l = B_1 \cdot e[k,l]$
+	\end{itemize}
+	\item Ograniczenia związane z zachowaniem ilości produktu w węzłach (I prawo Kirchhoffa):
+	\begin{itemize}
+		\item[$\cdot$] ${D_1}_o = {{D_1}_o}_{home} + {{D_1}_o}_{heavy}$
+		\item[$\cdot$] ${D_1}_d = {{D_1}_d}_K + {{D_1}_d}_{out}$
+		\item[$\cdot$] ${D_2}_o = {{D_2}_o}_{home} + {{D_2}_o}_{heavy}$
+		\item[$\cdot$] ${D_2}_d = {{D_2}_d}_K + {{D_2}_d}_{out}$
+	\end{itemize}
+	\item Ograniczenia związane z popytem na produkty destylacji (gdzie $d$ to wektor popytu):
+	\begin{itemize}
+		\item[$\cdot$] ${D_1}_p + {D_2}_p + K_p \geq d[p]$
+		\item[$\cdot$] ${{D_1}_o}_{home} + {{D_2}_o}_{home} + K_o \geq d[p]$
+		\item[$\cdot$] ${{D_1}_o}_{heavy} + {{D_1}_d}_{out} + {D_1}_l + {{D_2}_o}_{heavy} + {{D_2}_d}_{out} + {D_2}_l + K_l \geq d[p]$
+	\end{itemize}
+	\item Ograniczenia związane z poziomem siarki (gdzie $s$ to wektor poziomu siarki:
+	\begin{itemize}
+		\item[$\cdot$] ${{D_1}_o}_{home} \cdot s[b1] + {{D_2}_o}_{home} \cdot s[b2] + K_o \cdot s[k] \leq ({{D_1}_o}_{home} + {{D_2}_o}_{home} + K_o) \cdot s[o_{home}]$
+	\end{itemize}
+\end{itemize}
 \subsubsection{Funkcja celu}
+Zgodnie z treścią zadania funkcja celu przedstawiająca całkowite koszty produkcji, które minimalizujemy ma postać
+\[B_1 \cdot (p[b1] + c[b1]) + B_2 \cdot (p[b2] + c[b2]) + ({{D_1}_d}_K + {{D_2}_d}_K)*c[k]\]
+gdzie $p$ to wektor cen ropy, a $c$ to wektor kosztów destylacji.
 \subsection{Wyniki i interpretacja}
+W poniższej tabeli przedstawiono wartości kilku kluczowych zmiennych oraz funkcji celu
+\begin{table}[H]
+\centering
+\begin{tabular}{|l|r|}\hline
+Zakup B1 & 1026030.369 t\\\hline
+Zakup B2 & 0.000 t\\\hline
+Destylat do krakowania & 92190.889 t\\\hline
+Koszt & 1345943600.87 \$\\\hline
+\end{tabular}
+\end{table}
+
+Jak widzimy, w rozwiązaniu optymalnym kupujemy jedynie ropę typu B1.
 
 \section{Zadanie 4}
 \subsection{Opis Modelu}

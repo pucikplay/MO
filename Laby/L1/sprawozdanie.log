@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  28 MAR 2023 19:51
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  30 MAR 2023 16:59
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -547,30 +547,36 @@ LaTeX Font Info:    External font `plex10' loaded for size
 
 [1
 
-{C:/Users/Gabriel/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}] [2
+{C:/Users/Gabriel/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map}]
+Overfull \hbox (1.32024pt too wide) in paragraph at lines 71--74
+\OT4/cmr/m/n/10 gdzie $\OML/plm/m/it/10 m$ \OT4/cmr/m/n/10 to wek-tor wspóªczyn
+-ników kosztów trans-portu. Do rozwi¡za-nia mod-elu wprowad-zono odlegªo±ci
+ []
+
+[2
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.104 
+l.107 
       ] [3
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.121 \end{document}
-                    ] (sprawozdanie.aux)
+l.148 	\end{itemize}
+                    ] [4] (sprawozdanie.aux)
 Package rerunfilecheck Info: File `sprawozdanie.out' has not changed.
 (rerunfilecheck)             Checksum: 71A5C045F11C5BCFB00C809A766FC7D6;3179.
  ) 
 Here is how much of TeX's memory you used:
- 11621 strings out of 475380
- 186351 string characters out of 2775828
- 554379 words of memory out of 3000000
+ 11622 strings out of 475380
+ 186357 string characters out of 2775828
+ 558379 words of memory out of 3000000
  32792 multiletter control sequences out of 15000+600000
  485987 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,11n,77p,259b,453s stack positions out of 10000i,1000n,20000p,200000b,80000s
+ 72i,11n,77p,259b,647s stack positions out of 10000i,1000n,20000p,200000b,80000s
  <C:\Users\Gabriel\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
 rm1000.pk>{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/pl
 ms.enc}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plrm.
@@ -591,9 +597,9 @@ type1/public/pl/plr12.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts
 s/type1/public/pl/plr7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/font
 s/type1/public/pl/plsy10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fo
 nts/type1/public/pl/plsy7.pfb>
-Output written on sprawozdanie.pdf (3 pages, 113842 bytes).
+Output written on sprawozdanie.pdf (4 pages, 123402 bytes).
 PDF statistics:
- 198 PDF objects out of 1000 (max. 8388607)
- 30 named destinations out of 1000 (max. 500000)
+ 203 PDF objects out of 1000 (max. 8388607)
+ 31 named destinations out of 1000 (max. 500000)
  193 words of extra memory for PDF output out of 10000 (max. 10000000)
 
