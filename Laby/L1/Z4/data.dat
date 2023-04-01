@@ -1,0 +1,36 @@
+/*  Gabriel Budziński 254609*/
+data;
+
+/* Sets */
+
+set Subjects := Algebra Calculus Physics Min_Chem Org_Chem;
+set Groups := 1 2 3 4;
+set Days := 1 2 3 4 5;
+
+/* Parameters */
+
+param Start: Algebra Calculus Physics Min_Chem Org_Chem :=
+1            26      26       16      16       18
+2            20      20       20      16       21
+3            20      22       30      26       22
+4            22      16       34      26       26;
+
+param End: Algebra Calculus Physics Min_Chem Org_Chem :=
+1          30      30       20      20       21
+2          24      24       26      20       24
+3          24      26       36      30       25
+4          26      20       40      30       29;
+
+param Day: Algebra Calculus Physics Min_Chem Org_Chem :=
+1          1       1        2       1        1
+2          2       2        2       1        1
+3          3       3        4       4        5
+4          3       4        4       5        5;
+
+param Preference: Algebra Calculus Physics Min_Chem Org_Chem :=
+1                 5       4        3       10       0
+2                 4       4        5       10       5
+3                 10      5        7       7        3
+4                 5       6        8       5        4;
+
+end;
