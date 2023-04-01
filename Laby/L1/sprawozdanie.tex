@@ -50,7 +50,7 @@ n & $||x-\tilde{x}||_2/||x||_2$\\\hline
 \end{tabular}
 \end{table}
 
-Jak widzimy, błąd względny jest niewielki dla $x=2$, ale rośnie coraz szybciej i dla $x=10$ jest już ponad 1\%. Z dokładnością do co najmniej dwóch cyfr można obliczyć dla $n \leq 9$.
+Jak widzimy, błąd względny jest niewielki dla $x=2$, ale rośnie coraz szybciej i dla $x=10$ jest już prawie 100\%. Z dokładnością do co najmniej dwóch cyfr można obliczyć dla $n \leq 7$.
 
 \section{Zadanie 2}
 \subsection{Opis Modelu}
@@ -105,6 +105,7 @@ Racibórz & - & - & - & - & - & - & -\\\hline
 \caption{Dźwigi typu II}
 \end{table}
 
+Optymalny koszt transportu wyniósł $1413.76 \cdot s$, gdzie $s$ to cena za transport dźwigu typi I o jeden kilometr.
 Ograniczenie całkowitoliczbowości nie jest konieczne, ponieważ model zwraca to samo rozwiązanie z nim oraz bez niego.
 
 \section{Zadanie 3}
@@ -172,8 +173,28 @@ Jak widzimy, w rozwiązaniu optymalnym kupujemy jedynie ropę typu B1.
 \section{Zadanie 4}
 \subsection{Opis Modelu}
 \subsubsection{Zmienne decyzyjne}
+W modelu wykorzystano następujące zmienne decyzyjne:
+\begin{itemize}
+	\item macierz $r \in \{0,1\}^{|G| \times |S|}$, gdzie $G,S$ to odpowiednio zbiór grup i zbiór przedmiotów, $r_{gs} = 1$ wtedy i tylko wtedy, gdy student jest zapisany na ćwiczenia $(g,s)$,
+	\item macierz $h \in \{0,1\}^{|T| \times |D|}$, gdzie $T,D$ to odpowiednio zbiór półgodzinnych slotów (począwszy od 8:00 do 20:00) oraz zbiór dni, $h_{td} = 1$ wtedy i tylko wtedy, gdy student jest zapisany na ćwiczenia odbywające się w tym slocie,
+	\item $t_1,t_2,t_3$ - zmienne binarne odpowiadające obecności zajęć w czasie podanych godzin treningów sportowych.
+\end{itemize}
 \subsubsection{Ograniczenia}
+Zgodnie z treścią zadania oprogramowano ograniczenia:
+\begin{itemize}
+\item Brak kolizji między zajęciami:\\ 
+$\bigl(\forall g_1,g_2 \in G, s_1,s_2 \in S \bigr)$\\
+$\Bigl[\bigl(day_{g_1 s_1} = day_{g_2 s_2} \land (s_1 \neq s_2 \lor g_1 \neq g_2) \land (start_{g_1 s_1} \leq end_{g_2 s_2} \land start_{g_2 s_2} \leq end_{g_1 s_1})\bigr) \implies r_{g_1 s_1} + r_{g_2 s_2} \leq 1 \Bigr]$
+\item Maksimum 4 godziny ćwiczeń dziennie: \[(\forall d \in D) \left(\sum_{t \in T}{h_{td} \leq 4 \cdot 2}\right)\]
+\item Wolna godzina między 12 a 14 każdego dnia: \[(\forall d \in D) \left(\sum_{t \in \{24,25,26,27\}}{h_{td}} \leq 1 \cdot 2\right)\]
+\item Należy zapisać się na jedną z grup z każdego przedmiotu: \[(\forall s \in S)\left(\sum_{g \in G}{r_{gs}} = 1 \right)\]
+\item Sloty, w których trwają zajęcia muszą być oznaczone jako zajęte: \[(\forall g \in G, s \in S, t \in T)\bigl(t \geq start_{gs} \land t < end_{gs} \implies h_{gs} \geq r_{gs}\bigr)\]
+\end{itemize}
+
 \subsubsection{Funkcja celu}
+Zgodnie z treścią zadania maksymalizowana funkcja celu wyraża sumę wartości preferencji przedmiotów, na które zapisał się student.
+\[\sum_{g \in G, s \in S}{r_{gs} \cdot p_{gs}}\]
+gdzie $p$ to macierz preferencji.
 \subsection{Wyniki i interpretacja}
 
 \end{document}

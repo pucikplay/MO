@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  30 MAR 2023 16:59
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  1 APR 2023 17:12
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -564,42 +564,44 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.148 	\end{itemize}
-                    ] [4] (sprawozdanie.aux)
+l.149 	\end{itemize}
+                    ] [4] [5] (sprawozdanie.aux)
 Package rerunfilecheck Info: File `sprawozdanie.out' has not changed.
 (rerunfilecheck)             Checksum: 71A5C045F11C5BCFB00C809A766FC7D6;3179.
  ) 
 Here is how much of TeX's memory you used:
- 11622 strings out of 475380
- 186357 string characters out of 2775828
+ 11623 strings out of 475380
+ 186363 string characters out of 2775828
  558379 words of memory out of 3000000
  32792 multiletter control sequences out of 15000+600000
  485987 words of font info for 73 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
- 72i,11n,77p,259b,647s stack positions out of 10000i,1000n,20000p,200000b,80000s
- <C:\Users\Gabriel\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tc
-rm1000.pk>{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/pl
-ms.enc}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plrm.
-enc}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plme.enc
-}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plmi.enc}{C
-:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plit.enc}<C:/U
-sers/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/
-msbm10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/p
-l/plbx10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public
-/pl/plbx12.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/publ
-ic/pl/plbxti10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/
-public/pl/plex10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type
-1/public/pl/plmi10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/ty
-pe1/public/pl/plmi7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
-ype1/public/pl/plr10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/
-type1/public/pl/plr12.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts
-/type1/public/pl/plr17.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/font
-s/type1/public/pl/plr7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/font
-s/type1/public/pl/plsy10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fo
-nts/type1/public/pl/plsy7.pfb>
-Output written on sprawozdanie.pdf (4 pages, 123402 bytes).
+ 72i,11n,77p,298b,647s stack positions out of 10000i,1000n,20000p,200000b,80000s
+{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plsc.enc} 
+<C:\Users\Gabriel\AppData\Local\MiKTeX\fonts/pk/ljfour/jknappen/ec/dpi600\tcrm1
+000.pk>{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plms.
+enc}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plrm.enc
+}{C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plme.enc}{C
+:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plmi.enc}{C:/U
+sers/Gabriel/AppData/Local/Programs/MiKTeX/fonts/enc/dvips/pl/plit.enc}<C:/User
+s/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/amsfonts/symbols/msb
+m10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl/p
+lbx10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/pl
+/plbx12.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/public/
+pl/plbxti10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/pub
+lic/pl/plex10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1/p
+ublic/pl/plmi10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type1
+/public/pl/plmi7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/type
+1/public/pl/plr10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/typ
+e1/public/pl/plr12.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/ty
+pe1/public/pl/plr17.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/pl/plr5.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/pl/plr7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
+ype1/public/pl/plsy10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts
+/type1/public/pl/plsy7.pfb>
+Output written on sprawozdanie.pdf (5 pages, 138221 bytes).
 PDF statistics:
- 203 PDF objects out of 1000 (max. 8388607)
- 31 named destinations out of 1000 (max. 500000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 32 named destinations out of 1000 (max. 500000)
  193 words of extra memory for PDF output out of 10000 (max. 10000000)
 
