@@ -44,9 +44,6 @@ s.t. training_1_{t in {26,27,28,29}}: training_1 >= hours[t,1];
 s.t. training_2_{t in {22,23,24,25}}: training_2 >= hours[t,3];
 s.t. training_3_{t in {26,27,28,29}}: training_3 >= hours[t,3];
 /* training_1 and training_2 and training_3 = 0 */
-s.t. training_i: training_1 >= 0;
-s.t. training_ii: training_2 >= 0;
-s.t. training_iii: training_3 >= 0;
 s.t. training: training_1 + training_2 + training_3 <= 2;
 /* additional constraints */
 s.t. three_days{g in Groups, s in Subjects: Day[g,s] == 3 || Day[g,s] == 5}: register[g,s] = 0;
@@ -56,5 +53,14 @@ solve;
 
 display register;
 display Satisfaction;
+
+printf '' > "out.txt";
+for {t in Time} {
+    printf  "%.1f & ", t/2 >> "out.txt";
+    for {d in {1,2,3,4}} {
+        printf hours[t,d] & ' & ' >> "out.txt";
+    }
+    printf "%d \\\\\\hline\n", hours[t,5] >> 'out.txt';
+}
 
 end;
