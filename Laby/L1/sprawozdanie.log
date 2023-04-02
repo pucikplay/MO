@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  2 APR 2023 15:45
+This is pdfTeX, Version 3.141592653-2.6-1.40.24 (MiKTeX 22.10) (preloaded format=pdflatex 2022.11.2)  2 APR 2023 22:55
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -578,13 +578,13 @@ pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.108 
+l.109 
       ] [3
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has
  been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.150 	\end{itemize}
+l.151 	\end{itemize}
                     ] [4] [5] [6] [7] (sprawozdanie.aux)
 Package rerunfilecheck Info: File `sprawozdanie.out' has not changed.
 (rerunfilecheck)             Checksum: 71A5C045F11C5BCFB00C809A766FC7D6;3179.
@@ -619,7 +619,7 @@ ype1/public/pl/plr5.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/pl/plr7.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts/t
 ype1/public/pl/plsy10.pfb><C:/Users/Gabriel/AppData/Local/Programs/MiKTeX/fonts
 /type1/public/pl/plsy7.pfb>
-Output written on sprawozdanie.pdf (7 pages, 144530 bytes).
+Output written on sprawozdanie.pdf (7 pages, 144570 bytes).
 PDF statistics:
  223 PDF objects out of 1000 (max. 8388607)
  34 named destinations out of 1000 (max. 500000)

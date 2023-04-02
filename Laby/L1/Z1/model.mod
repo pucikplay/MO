@@ -22,6 +22,6 @@ solve;
 
 /* output to file */
 
-printf N & "," & sum{i in {1..N}} (1 - X[i])^2 / N & "\n" >> "out.csv";
+printf N & "," & sqrt((sum{i in {1..N}} (1 - X[i])^2)) / sqrt(N) & "\n" >> "out.csv";
 
 end;
