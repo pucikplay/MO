@@ -1,4 +1,4 @@
-/*  Gabriel Budziński 254609*/
+/* Gabriel Budziński 254609 */
 data;
 
 set Cities := Opole Brzeg Nysa Prudnik Strzelce Kozle Raciborz;

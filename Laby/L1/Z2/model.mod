@@ -1,4 +1,4 @@
-/*  Gabriel Budziński 254609*/
+/* Gabriel Budziński 254609 */
 /* Enumerated sets */
 
 set Cities;
