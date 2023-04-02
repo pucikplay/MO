@@ -8,6 +8,7 @@
 \usepackage{polski}
 \usepackage{enumitem}
 \usepackage{float}
+\usepackage[table]{xcolor}
 
 \title{Metody optymalizacji L1}
 \author{Gabriel Budziński\\254609}
@@ -68,8 +69,8 @@ Zgodnie z treścią zadania zaprogramowano trzy ograniczenia:
 \end{itemize}
 \subsubsection{Funkcja celu}
 Funkcją celu jest koszt transportu dźwigów pomiędzy miastami, który należy zminimalizować. 
-\[(\forall i,j \in \{1,\dots,n\}, k \in \{I,II\}) \left(\sum{x_{ijk} \cdot m_k}\right)\]
-gdzie $m$ to wektor współczynników kosztów transportu.
+\[\sum_{i,j \in \{1,\dots,n\}, k \in \{I,II\}}{x_{ijk} \cdot l_{ij} \cdot m_k}\]
+gdzie $l$ to macierz odległości miast, a $m$ to wektor współczynników kosztów transportu.
 Do rozwiązania modelu wprowadzono odległości między podanymi miastami pobrane z Google Maps.
 \subsection{Wyniki i interpretacja}
 
@@ -105,7 +106,7 @@ Racibórz & - & - & - & - & - & - & -\\\hline
 \caption{Dźwigi typu II}
 \end{table}
 
-Optymalny koszt transportu wyniósł $1413.76 \cdot s$, gdzie $s$ to cena za transport dźwigu typi I o jeden kilometr.
+Optymalny koszt transportu wyniósł $1413.76 \cdot s$, gdzie $s$ to cena za transport dźwigu typu I o jeden kilometr.
 Ograniczenie całkowitoliczbowości nie jest konieczne, ponieważ model zwraca to samo rozwiązanie z nim oraz bez niego.
 
 \section{Zadanie 3}
@@ -176,19 +177,29 @@ Jak widzimy, w rozwiązaniu optymalnym kupujemy jedynie ropę typu B1.
 W modelu wykorzystano następujące zmienne decyzyjne:
 \begin{itemize}
 	\item macierz $r \in \{0,1\}^{|G| \times |S|}$, gdzie $G,S$ to odpowiednio zbiór grup i zbiór przedmiotów, $r_{gs} = 1$ wtedy i tylko wtedy, gdy student jest zapisany na ćwiczenia $(g,s)$,
-	\item macierz $h \in \{0,1\}^{|T| \times |D|}$, gdzie $T,D$ to odpowiednio zbiór półgodzinnych slotów (począwszy od 8:00 do 20:00) oraz zbiór dni, $h_{td} = 1$ wtedy i tylko wtedy, gdy student jest zapisany na ćwiczenia odbywające się w tym slocie,
+	\item macierz $h \in \{0,1\}^{|T| \times |D|}$, gdzie $T,D$ to odpowiednio zbiór półgodzinnych slotów (począwszy od 8:00 do 20:00, numerowane od 16 do 39) oraz zbiór dni, $h_{td} = 1$ wtedy i tylko wtedy, gdy student jest zapisany na ćwiczenia odbywające się w tym slocie,
 	\item $t_1,t_2,t_3$ - zmienne binarne odpowiadające obecności zajęć w czasie podanych godzin treningów sportowych.
 \end{itemize}
 \subsubsection{Ograniczenia}
 Zgodnie z treścią zadania oprogramowano ograniczenia:
 \begin{itemize}
-\item Brak kolizji między zajęciami:\\ 
+	\item Brak kolizji między zajęciami:\\ 
 $\bigl(\forall g_1,g_2 \in G, s_1,s_2 \in S \bigr)$\\
 $\Bigl[\bigl(day_{g_1 s_1} = day_{g_2 s_2} \land (s_1 \neq s_2 \lor g_1 \neq g_2) \land (start_{g_1 s_1} \leq end_{g_2 s_2} \land start_{g_2 s_2} \leq end_{g_1 s_1})\bigr) \implies r_{g_1 s_1} + r_{g_2 s_2} \leq 1 \Bigr]$
-\item Maksimum 4 godziny ćwiczeń dziennie: \[(\forall d \in D) \left(\sum_{t \in T}{h_{td} \leq 4 \cdot 2}\right)\]
-\item Wolna godzina między 12 a 14 każdego dnia: \[(\forall d \in D) \left(\sum_{t \in \{24,25,26,27\}}{h_{td}} \leq 1 \cdot 2\right)\]
-\item Należy zapisać się na jedną z grup z każdego przedmiotu: \[(\forall s \in S)\left(\sum_{g \in G}{r_{gs}} = 1 \right)\]
-\item Sloty, w których trwają zajęcia muszą być oznaczone jako zajęte: \[(\forall g \in G, s \in S, t \in T)\bigl(t \geq start_{gs} \land t < end_{gs} \implies h_{gs} \geq r_{gs}\bigr)\]
+	\item Maksimum 4 godziny ćwiczeń dziennie: \[(\forall d \in D) \left(\sum_{t \in T}{h_{td} \leq 4 \cdot 2}\right)\]
+	\item Wolna godzina między 12 a 14 każdego dnia: \[(\forall d \in D) \left(\sum_{t \in \{24,25,26,27\}}{h_{td}} \leq 1 \cdot 2\right)\]
+	\item Należy zapisać się na jedną z grup z każdego przedmiotu: \[(\forall s \in S)\left(\sum_{g \in G}{r_{gs}} = 1 \right)\]
+	\item Sloty, w których trwają zajęcia muszą być oznaczone jako zajęte: \[(\forall g \in G, s \in S, t \in T)\bigl(t \geq start_{gs} \land t < end_{gs} \implies h_{gs} \geq r_{gs}\bigr)\]
+	\item Ograniczenia związane z treningami:
+	\begin{itemize}
+		\item Ustaw $t_i$ na 1 jeśli jakiś slot w czasie i-tego terminu treningu jest zajęty: \[h_{26,1} + h_{27,1} + h_{28,1} + h_{29,1} \geq t_1\] \[h_{22,3} + h_{23,3} + h_{24,3} + h_{25,3} \geq t_2\] \[h_{26,3} + h_{27,3} + h_{28,3} + h_{29,3} \geq t_3\]
+		\item Co najmniej jeden ze slotów jest wolny, czyli $t_1 \land t_2 \land t_3 = 0$:	\[\sum_{i=1}^3{t_i} \leq 2\]
+	\end{itemize}
+	\item Ograniczenia dodatkowe:
+	\begin{itemize}
+		\item Zapisywanie się na zajęcia jedynie w poniedziałek, wtorek i czwartek: \[(\forall g \in G, s \in S)(day_{gs} = 3 \lor day_{gs} = 5 \implies r_{gs} = 0)\]
+		\item Zapisywanie się jedynie na grupy ze wskaźnikiem preferencji co najmniej 5: \[(\forall g \in G, s \in S)(p_{gs} \leq 4 \implies r_{gs} = 0)\]
+	\end{itemize}
 \end{itemize}
 
 \subsubsection{Funkcja celu}
@@ -196,5 +207,97 @@ Zgodnie z treścią zadania maksymalizowana funkcja celu wyraża sumę wartości
 \[\sum_{g \in G, s \in S}{r_{gs} \cdot p_{gs}}\]
 gdzie $p$ to macierz preferencji.
 \subsection{Wyniki i interpretacja}
+
+Bez stosowania ograniczeń dodatkowych osiągnięto plan, którego suma wskaźników preferencji wynosi 37:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|c|c|c|c|c|}
+		& Algebra & Analiza & Fizyka & Chemia min. & Chemia org.\\\hline
+		I & & & & & \\\hline
+		II & & $\times$ & & $\times$ & $\times$ \\\hline
+		III & $\times$ & & & & \\\hline
+		VI & & & $\times$ & & \\\hline
+	\end{tabular}
+\end{table}
+
+Który na planie godzinowym wygląda następująco:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c|c|c}
+		& Pn. & Wt. & Śr. & Cz. & Pt.\\\hline
+		8:00 & \cellcolor{blue!50} & & & & \\\hline
+		8:30 & \cellcolor{blue!50} & & & & \\\hline
+		9:00 & \cellcolor{blue!50} & & & & \\\hline
+		9:30 & \cellcolor{blue!50} & & & & \\\hline
+		10:00 & & \cellcolor{blue!50} & \cellcolor{blue!50} & & \\\hline
+		10:30 & \cellcolor{blue!50} & \cellcolor{blue!50} & \cellcolor{blue!50} & & \\\hline
+		11:00 & \cellcolor{blue!50} & \cellcolor{blue!50} & \cellcolor{blue!50} & & \\\hline
+		11:30 & \cellcolor{blue!50} & \cellcolor{blue!50} & \cellcolor{blue!50} & & \\\hline
+		12:00 & & & & & \\\hline
+		12:30 & & & & & \\\hline
+		13:00 & & & & & \\\hline
+		13:30 & & & & & \\\hline
+		14:00 & & & & & \\\hline
+		14:30 & & & & & \\\hline
+		15:00 & & & & & \\\hline
+		15:30 & & & & & \\\hline
+		16:00 & & & & & \\\hline
+		16:30 & & & & & \\\hline
+		17:00 & & & & \cellcolor{blue!50} & \\\hline
+		17:30 & & & & \cellcolor{blue!50} & \\\hline
+		18:00 & & & & \cellcolor{blue!50} & \\\hline
+		18:30 & & & & \cellcolor{blue!50} & \\\hline
+		19:00 & & & & \cellcolor{blue!50} & \\\hline
+		19:30 & & & & \cellcolor{blue!50} & \\\hline
+	\end{tabular}
+\end{table}
+
+Natomiast stosując dodatkowe ograniczenia osiągnięto wynik 28:
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{r|c|c|c|c|c|}
+		& Algebra & Analiza & Fizyka & Chemia min. & Chemia org.\\\hline
+		I & $\times$ & & & & \\\hline
+		II & & & $\times$ & & $\times$ \\\hline
+		III & & & & $\times$ & \\\hline
+		VI & & $\times$ & & & \\\hline
+	\end{tabular}
+\end{table}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{c|c|c|c|c|c}
+		& Pn. & Wt. & Śr. & Cz. & Pt.\\\hline
+		8:00 & & & & \cellcolor{blue!50} & \\\hline
+		8:30 & & & & \cellcolor{blue!50} & \\\hline
+		9:00 & & & & \cellcolor{blue!50} & \\\hline
+		9:30 & & & & \cellcolor{blue!50} & \\\hline
+		10:00 & & \cellcolor{blue!50} & & & \\\hline
+		10:30 & \cellcolor{blue!50} & \cellcolor{blue!50} & & & \\\hline
+		11:00 & \cellcolor{blue!50} & \cellcolor{blue!50} & & & \\\hline
+		11:30 & \cellcolor{blue!50} & \cellcolor{blue!50} & & & \\\hline
+		12:00 & & \cellcolor{blue!50} & & & \\\hline
+		12:30 & & \cellcolor{blue!50} & & & \\\hline
+		13:00 & \cellcolor{blue!50} & & & \cellcolor{blue!50} & \\\hline
+		13:30 & \cellcolor{blue!50} & & & \cellcolor{blue!50} & \\\hline
+		14:00 & \cellcolor{blue!50} & & & \cellcolor{blue!50} & \\\hline
+		14:30 & \cellcolor{blue!50} & & & \cellcolor{blue!50} & \\\hline
+		15:00 & & & & & \\\hline
+		15:30 & & & & & \\\hline
+		16:00 & & & & & \\\hline
+		16:30 & & & & & \\\hline
+		17:00 & & & & & \\\hline
+		17:30 & & & & & \\\hline
+		18:00 & & & & & \\\hline
+		18:30 & & & & & \\\hline
+		19:00 & & & & & \\\hline
+		19:30 & & & & & \\\hline
+	\end{tabular}
+\end{table}
+
+Jak widać oba rozwiązania spełniają założenia o przerwie obiadowej oraz dostępności terminów treningu.
 
 \end{document}
