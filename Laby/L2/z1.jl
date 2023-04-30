@@ -15,55 +15,47 @@ function get_loss(pattern, widths, plank_width)
 end
 
 function gen_patterns(widths, plank_width)
-    patterns = zeros(Int8, length(widths))
-    
-    losses = [get_loss(patterns, widths, plank_width)]
-    while true
-        i = 
+    widths_no = length(widths)
+    fit = map((x) -> plank_width ÷ x, widths)
+    patterns = zeros(Int8, widths_no)
+    counts = zeros(Int8, widths_no)
+    while counts[1] <= fit[1]
+        loss = get_loss(counts, widths, plank_width)
+        if loss < widths[widths_no] && loss >= 0
+            patterns = cat(dims=2, patterns, counts)
+        end
+        i = widths_no
+        counts[i] += 1
+        while counts[i] > fit[i]
+            counts[i] = 0
+            i -= 1
+            if i == 0
+                counts[1] = fit[1] + 1
+                break
+            end
+            counts[i] += 1
+        end
+    end
+    return patterns[:,2:end]
+end
+
+function solve(plank_width, widths, demand, patterns)
+    model = Model(GLPK.Optimizer)
+    widths_no = length(widths)
+    patterns_no = length(patterns) ÷ widths_no
+    @variable(model, x[1:patterns_no] >= 0, Int)
+    @constraint(model, [i = 1:widths_no], sum(x.*patterns[i,:]) >= demand[i])
+    @objective(model, Min, sum(x[:]))
+    optimize!(model)
+    #objective_value(model)
+    #value.(x)
+    for i in 1:patterns_no
+        println("$(value(x[i])) $(patterns[:,i])")
     end
 end
 
-# function solve(plank_width, widths, demand)
-#     model = Model(GLPK.Optimizer)
-
-# end
-
 plank_width = 22
-widths = [7, 5, 3]
-demand = [110, 120, 80]
+widths = [7 5 3]
+demand = [110 120 80]
 
-# function solve(suppliers, capacities, receivers, requirements, cost)
-#     model = Model(GLPK.Optimizer)
-#     buy = zeros(Int8, receivers, suppliers)
-#     @variable(model, buy[1:receivers,1:suppliers] >= 0)
-#     for s in 1:suppliers
-#         @constraint(model, (sum(buy[1:receivers,s]) <= capacities[s]))
-#     end
-#     for r in 1:receivers
-#         @constraint(model, sum(buy[r,1:suppliers]) == requirements[r])
-#     end
-#     @objective(model, Min, sum(cost[r,s] * buy[r,s] for r in 1:receivers, s in 1:suppliers))
-
-#     optimize!(model)
-#     for i in 1:receivers
-#         for j in 1:suppliers
-#             print("$(value(buy[i,j])) ")
-#         end
-#         println()
-#     end
-#     return
-# end
-
-# suppliers = 3
-# capacities = [275000,550000,660000]
-# receivers = 4
-# requirements = [110000,220000,330000,440000]
-
-# cost = [
-#     10 7 8
-#     10 11 14
-#     9 12 4
-#     11 13 9
-#     ]
-
-# solve(suppliers, capacities, receivers, requirements, cost)
+solve(plank_width, widths, demand, gen_patterns(widths, plank_width))
