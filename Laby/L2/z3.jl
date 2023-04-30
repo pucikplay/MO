@@ -11,39 +11,40 @@ M = 1000
 function solve(n, m, p, r)
     model = Model(GLPK.Optimizer)
 
-    @variable(model, c[1:n] >= 0)
-    @variable(model, 1 <= c_m[1:n] <= m, Int)
-    @variable(model, y[i in 1:n, j in 1:n], Bin)
-    @variable(model, C >= 0)
-    for i in 1:n, j in 1:n
-        if i < j
-            if c_m[i] == c_m[j]
-                @constraint(model, c[i] <= c[j] - p[j] + M*(1 - y[i,j]))
-                @constraint(model, c[j] <= c[i] - p[i] + M*y[i,j])
-            end
-            @constraint(model, c[i] <= c[j] - p[j] + M*(1 - r[i,j]))
-            @constraint(model, c[j] <= c[i] - p[i] + M*r[i,j])
-        end
-    end
-    @constraint(model, [i in 1:n], C >= c[i])
+    @variable(model, s[1:n] >= 0) # start times
+    @variable(model, 1 <= c[1:n] <= m, Int) # machine number
+    @variable(model, y[1:n,1:n], Bin) # precedence on same machine
+    @variable(model, x[1:n,1:n,1:3], Bin) # if same machine
+    @variable(model, C) # C_max
+    # if same machine x[i,j,2] == 1
+    @constraint(model, [i in 1:n, j in 1:n; i < j], c[i] - c[j] <= -0.1*x[i,j,1] + m*x[i,j,3])
+    @constraint(model, [i in 1:n, j in 1:n; i < j], -m*x[i,j,1] + 0.1*x[i,j,3] <= c[i] - c[j])
+    @constraint(model, [i in 1:n, j in 1:n], sum(x[i,j,:]) == 1)
+    # if same machine i before j or j before i
+    @constraint(model, [i in 1:n, j in 1:n; i < j], s[i] + M*(y[i,j] + (1-x[i,j,2])) >= s[j] + p[j])
+    @constraint(model, [i in 1:n, j in 1:n; i < j], s[j] + M*(1 - y[i,j] + (1-x[i,j,2])) >= s[i] + p[i])
+    # precedence from task data
+    @constraint(model, [i in 1:n, j in 1:n; i < j && r[i,j] == 1], s[i] + p[i] <= s[j])
+    # C_max is the max
+    @constraint(model, [i in 1:n], C >= s[i] + p[i])
     @objective(model, Min, C)
     optimize!(model)
     for i in 1:n
-        println("$(value(c[i])) $(value(c_m[i]))")
+        println("$i $(value(s[i])) $(value(c[i]))")
     end
 end
 
 n = 9
 m = 3
 p = [1 2 1 2 1 1 3 6 2]
-r = [0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0
-     0 0 0 0 0 0 0 0 0
-     1 1 1 0 0 0 0 0 0
-     0 1 1 0 0 0 0 0 0
-     0 0 0 1 0 0 0 0 0
+r = [0 0 0 1 0 0 0 0 0
      0 0 0 1 1 0 0 0 0
-     0 0 0 0 1 0 0 0 0
-     0 0 0 0 0 1 1 0 0]
+     0 0 0 1 1 0 0 0 0
+     0 0 0 0 0 1 1 0 0
+     0 0 0 0 0 0 1 1 0
+     0 0 0 0 0 0 0 0 1
+     0 0 0 0 0 0 0 0 1
+     0 0 0 0 0 0 0 0 0
+     0 0 0 0 0 0 0 0 0]
 
 solve(n, m, p, r)
