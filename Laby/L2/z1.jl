@@ -6,6 +6,7 @@ Gabriel Budziński
 using JuMP
 import GLPK
 
+# get loss of pattern
 function get_loss(pattern, widths, plank_width)
     sum = 0
     for i in 1:length(widths)
@@ -14,6 +15,7 @@ function get_loss(pattern, widths, plank_width)
     return plank_width - sum
 end
 
+# generate all feasible patterns
 function gen_patterns(widths, plank_width)
     widths_no = length(widths)
     fit = map((x) -> plank_width ÷ x, widths)
@@ -43,12 +45,10 @@ function solve(plank_width, widths, demand, patterns)
     model = Model(GLPK.Optimizer)
     widths_no = length(widths)
     patterns_no = length(patterns) ÷ widths_no
-    @variable(model, x[1:patterns_no] >= 0, Int)
-    @constraint(model, [i = 1:widths_no], sum(x.*patterns[i,:]) >= demand[i])
+    @variable(model, x[1:patterns_no] >= 0, Int) # number of planks cut in each pattern
+    @constraint(model, [i = 1:widths_no], sum(x.*patterns[i,:]) >= demand[i]) # satisfy demand
     @objective(model, Min, sum(x[:]))
     optimize!(model)
-    #objective_value(model)
-    #value.(x)
     for i in 1:patterns_no
         println("$(value(x[i])) $(patterns[:,i])")
     end

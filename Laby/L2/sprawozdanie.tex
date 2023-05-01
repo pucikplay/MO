@@ -9,6 +9,12 @@
 \usepackage{enumitem}
 \usepackage{float}
 \usepackage[table]{xcolor}
+\usepackage{tikz}
+\usepackage{pgfgantt}
+
+\newcommand\Dganttbar[4]{%
+  \ganttbar{#1}{#3}{#4}\ganttbar[inline,bar label font=\footnotesize]{#2}{#3}{#4}
+}
 
 \title{Metody optymalizacji L1}
 \author{Gabriel Budziński\\254609}
@@ -50,25 +56,93 @@ co daje odpowiednio 111,121 oraz 82 deski zadanych szerokości, a odpad wyniós�
 
 \section{Zadanie 2}
 \subsection{Opis Modelu}
-
+$n$ - liczba zadań, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - wektor czasów gotowości zadania $\in \mathbb{R}^n$, $w$ - wektor wag zadań $\in \mathbb{R}^n$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$)
 \subsubsection{Zmienne decyzyjne}
+\begin{itemize}
+	\item $c$ - wektor czasów zakończenia zadań $\in \mathbb{R}^n$
+\end{itemize}
 
 \subsubsection{Ograniczenia}
+\begin{itemize}
+	\item spełnienie warunków gotowości
+	\[(\forall i in [n])\left(c_i - p_i \geq r_i\right)\]
+	\item wymuszenie rozłączności zadań na tej samej maszynie
+	\[(\forall i,j \in [n])\left(i < j \implies c_i \leq c_j - p_j + M(1-y_{ij})\right)\]
+	\[(\forall i,j \in [n])\left(i < j \implies c_j \leq c_i - p_i + My_{ij}\right)\]
+\end{itemize}
 
 \subsubsection{Funkcja celu}
+Funkcja celu, którą minimalizujemy to
+\[\sum_{i=1}^{n}{c_i w_i}\]
 
 \subsection{Wyniki i interpretacja}
+Dla przykładowych danych $n = 3, p = (2,3,2), w = (1,1,5), r = (2,3,5)$ program zwrócił rozwiązanie postaci
+
+\begin{figure}[H]
+	\begin{ganttchart}[
+	bar/.append style={fill=blue!50},
+	expand chart=\textwidth]{0}{9}
+	\gantttitlelist{0,...,9}{1} \\
+	\Dganttbar{}{1}{2}{3}
+	\Dganttbar{}{2}{7}{9}
+	\Dganttbar{}{3}{5}{6}
+	\end{ganttchart}
+\end{figure}
+
+O wartości funkcji celu 49.
 
 \section{Zadanie 3}
 \subsection{Opis Modelu}
+$n$ - liczba zadań, $m$ - liczba maszyn, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - macierz relacji poprzedzania $\in \{0,1\}^{n\times n}$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$)
 
 \subsubsection{Zmienne decyzyjne}
+\begin{itemize}
+	\item $s$ - wektor czasów rozpoczęcia zadań $\in \mathbb{R}^n$
+	\item $c$ - wektor numerów maszyn, na których wykonano dane zdanie $\in [m]^n$
+	\item $y$ - binarna macierz pomocnicza do wymuszania rozłączności zadań na danej maszynie $\in \{0,1\}^{n\times n}$
+	\item $x$ - binarna macierz pomocnicza do sprawdzania, czy zadania są wykonywane na tej samej maszynie $\in \{0,1\}^{n\times n\times 3}$
+	\item $C$ - ograniczenie górne czasów zakończenia zadań $\in \mathbb{R}$
+\end{itemize}
 
 \subsubsection{Ograniczenia}
+\begin{itemize}
+	\item ustawienie wartości $x$
+	\[(\forall i,j \in [n])\left(i < j \implies Lx_{ij1} + bx_{ij2} + (b+\delta)x_{ij3} \leq c[i] - c[j] \leq (b-\delta)x_{ij1} + bx_{ij2}  + Ux_{ij3}\right)\] gdzie $L=-m, U=m, \delta=0.1, b=0$
+	\[(\forall i,j \in [n])\left(\sum_{k\in \{1,2,3\}}{x_{i,j,k}} = 1\right)\]
+	\item wymuszenie rozłączności zadań na tej samej maszynie
+	\[(\forall i,j \in [n])\left(i < j \implies s_i + M(y_{ij} + (1-x_{ij2})) \geq s_j + p_j\right)\]
+	\[(\forall i,j \in [n])\left(i < j \implies s_j + M((1-y_{ij}) + (1-x_{ij2})) \geq s_i + p_i\right)\]
+	\item wymuszenie zadanego poprzedzania
+	\[(\forall i,j \in [n])\left(i < j \and r_{ij} = 1 \implies s_i + p_i \leq s_j\right)\]
+	\item ustawienie $C$ jako ograniczenia górnego na czas zakończenia
+	\[(\forall i \in [n])\left(C \geq s_i + p_i\right)\]
+\end{itemize}
 
 \subsubsection{Funkcja celu}
+Funkcja celu przyjmuje wartość $C$, które staramy się zminimalizować.
 
 \subsection{Wyniki i interpretacja}
+
+Po optymalizacji model odpowiada rozwiązaniu,
+
+\begin{figure}[H]
+	\begin{ganttchart}[
+	bar/.append style={fill=blue!50},
+	expand chart=\textwidth]{0}{8}
+	\gantttitlelist{0,...,8}{1} \\
+	\Dganttbar{M1}{3}{0}{0}
+	\Dganttbar{}{5}{2}{2}
+	\Dganttbar{}{8}{3}{8} \\
+	\Dganttbar{M2}{2}{0}{1}
+	\Dganttbar{}{6}{4}{4} \\
+	\Dganttbar{M3}{1}{0}{0}
+	\Dganttbar{}{4}{2}{3}
+	\Dganttbar{}{7}{4}{6}
+	\Dganttbar{}{9}{7}{8}
+	\end{ganttchart}
+\end{figure}
+
+które spełnia zadane założenia i ma wartość funkcji celu $C_{max} = 9$.
 
 \section{Zadanie 4}
 \subsection{Opis Modelu}
