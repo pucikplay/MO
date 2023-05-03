@@ -5,39 +5,32 @@ Gabriel Budziński
 
 using JuMP
 import Cbc
+import GLPK
 
 M = 1000
 
-function replace(x)
-    if x == 1
-        return '#'
-    else
-        return '-'
-    end
-end
-
 function solve(n, p, t, r, u, T)
-    model = Model(Cbc.Optimizer)
+    model = Model(GLPK.Optimizer)
     @variable(model, x[1:n,1:T], Bin)
     @variable(model, C >= 0) # C_max
-    for i in 1:n, w in 1:T
-        W = max(1,w-t[i]+1)
-        @constraint(model, sum(x[i,W]*r[i]) <= 30)
-    end
-    @constraint(model, [i in 1:n, j in 1:n; i < j && u[i,j] == 1], sum((w-1+t[i])*x[i,w] for w in 1:(T-t[i]+1)) <= sum((w-1)*x[j,w] for w in 1:(T-t[j]+1)))
     @constraint(model, [i in 1:n], sum(x[i,:]) == 1)
-    for i in 1:n
-        @constraint(model, [w in t[i]:(T+t[i]-1)], x[i,(w-t[i]+1)]*w <= C)
-    end
+    @constraint(model, [i in 1:n, j in 1:n; i < j && u[i,j] == 1], sum(x[i,time]*(time-1) for time in 1:T) + t[i] <= sum(x[j,time]*(time-1) for time in 1:T))
+    @constraint(model, [i in 1:n], C >= sum(x[i,time]*(time-1) for time in 1:T) + t[i])
+    @constraint(model, [time in 1:T], sum(sum(x[i,max(1,time-t[i]+1):time])*r[i] for i in 1:n) <= 30)
     @objective(model, Min, C)
     optimize!(model)
     for i in 1:n
-        for w in 1:225
-            print("$(replace(value(x[i,w])))")
+        for w in 1:240
+            if value.(sum(x[i,max(1,w-t[i]+1):w])) >= 0.9
+                print("#")
+            else
+                print('-')
+            end
         end
         print("\n")
     end
-    println("$(value(C))")
+    println(value(C))
+    println(solve_time(model))
 end
 
 n = 8
