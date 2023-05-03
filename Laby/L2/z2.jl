@@ -10,9 +10,10 @@ M = 1000
 
 function solve(n, p, w, r)
     model = Model(GLPK.Optimizer)
-
-    @variable(model, c[1:n] >= 0) # task finish times
-    @variable(model, y[1:n,1:n], Bin) # precedence
+    # task finish times
+    @variable(model, c[1:n] >= 0)
+    # precedence
+    @variable(model, y[1:n,1:n], Bin)
     # task must be started after specified time
     @constraint(model, [i in 1:n], c[i] - p[i] >= r[i])
     # task i before j or j before i

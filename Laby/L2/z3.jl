@@ -10,12 +10,16 @@ M = 1000
 
 function solve(n, m, p, r)
     model = Model(GLPK.Optimizer)
-
-    @variable(model, s[1:n] >= 0) # start times
-    @variable(model, 1 <= c[1:n] <= m, Int) # machine number
-    @variable(model, y[1:n,1:n], Bin) # precedence on same machine
-    @variable(model, x[1:n,1:n,1:3], Bin) # if same machine
-    @variable(model, C) # C_max
+    # start times
+    @variable(model, s[1:n] >= 0)
+    # machine number
+    @variable(model, 1 <= c[1:n] <= m, Int)
+    # precedence on same machine
+    @variable(model, y[1:n,1:n], Bin)
+    # if same machine
+    @variable(model, x[1:n,1:n,1:3], Bin)
+    # C_max
+    @variable(model, C)
     # if same machine x[i,j,2] == 1
     @constraint(model, [i in 1:n, j in 1:n; i < j], c[i] - c[j] <= -0.1*x[i,j,1] + m*x[i,j,3])
     @constraint(model, [i in 1:n, j in 1:n; i < j], -m*x[i,j,1] + 0.1*x[i,j,3] <= c[i] - c[j])

@@ -45,8 +45,10 @@ function solve(plank_width, widths, demand, patterns)
     model = Model(GLPK.Optimizer)
     widths_no = length(widths)
     patterns_no = length(patterns) ÷ widths_no
-    @variable(model, x[1:patterns_no] >= 0, Int) # number of planks cut in each pattern
-    @constraint(model, [i = 1:widths_no], sum(x.*patterns[i,:]) >= demand[i]) # satisfy demand
+    # number of planks cut in each pattern
+    @variable(model, x[1:patterns_no] >= 0, Int)
+    # satisfy demand
+    @constraint(model, [i = 1:widths_no], sum(x.*patterns[i,:]) >= demand[i])
     @objective(model, Min, sum(x[:]))
     optimize!(model)
     for i in 1:patterns_no
