@@ -56,17 +56,17 @@ co daje odpowiednio 111,121 oraz 82 deski zadanych szerokości, a odpad wyniós�
 
 \section{Zadanie 2}
 \subsection{Opis Modelu}
-$n$ - liczba zadań, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - wektor czasów gotowości zadania $\in \mathbb{R}^n$, $w$ - wektor wag zadań $\in \mathbb{R}^n$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$)
+$n$ - liczba zadań, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - wektor czasów gotowości zadania $\in \mathbb{R}^n$, $w$ - wektor wag zadań $\in \mathbb{R}^n$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$), wszystkie dane $\geq 0$
 \subsubsection{Zmienne decyzyjne}
 \begin{itemize}
-	\item $c$ - wektor czasów zakończenia zadań $\in \mathbb{R}^n$
+	\item $c$ - wektor czasów zakończenia zadań $\in \mathbb{R}_{+}^n$
 \end{itemize}
 
 \subsubsection{Ograniczenia}
 \begin{itemize}
 	\item spełnienie warunków gotowości
-	\[(\forall i in [n])\left(c_i - p_i \geq r_i\right)\]
-	\item wymuszenie rozłączności zadań na tej samej maszynie
+	\[(\forall i \in [n])\left(c_i - p_i \geq r_i\right)\]
+	\item wymuszenie rozłączności zadań
 	\[(\forall i,j \in [n])\left(i < j \implies c_i \leq c_j - p_j + M(1-y_{ij})\right)\]
 	\[(\forall i,j \in [n])\left(i < j \implies c_j \leq c_i - p_i + My_{ij}\right)\]
 \end{itemize}
@@ -93,27 +93,27 @@ O wartości funkcji celu 49.
 
 \section{Zadanie 3}
 \subsection{Opis Modelu}
-$n$ - liczba zadań, $m$ - liczba maszyn, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - macierz relacji poprzedzania $\in \{0,1\}^{n\times n}$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$)
+$n$ - liczba zadań, $m$ - liczba maszyn, $p$ - wektor czasów wykonania zadań $\in \mathbb{R}^n$, $r$ - macierz relacji poprzedzania $\in \{0,1\}^{n\times n}$, $M$ - duża liczba (np. $M > \sum_{i=1}^{n}{p_i}$), wszystkie dane $\geq 0$
 
 \subsubsection{Zmienne decyzyjne}
 \begin{itemize}
-	\item $s$ - wektor czasów rozpoczęcia zadań $\in \mathbb{R}^n$
+	\item $s$ - wektor czasów rozpoczęcia zadań $\geq 0$
 	\item $c$ - wektor numerów maszyn, na których wykonano dane zdanie $\in [m]^n$
 	\item $y$ - binarna macierz pomocnicza do wymuszania rozłączności zadań na danej maszynie $\in \{0,1\}^{n\times n}$
 	\item $x$ - binarna macierz pomocnicza do sprawdzania, czy zadania są wykonywane na tej samej maszynie $\in \{0,1\}^{n\times n\times 3}$
-	\item $C$ - ograniczenie górne czasów zakończenia zadań $\in \mathbb{R}$
+	\item $C$ - ograniczenie górne czasów zakończenia zadań
 \end{itemize}
 
 \subsubsection{Ograniczenia}
 \begin{itemize}
 	\item ustawienie wartości $x$
-	\[(\forall i,j \in [n])\left(i < j \implies Lx_{ij1} + bx_{ij2} + (b+\delta)x_{ij3} \leq c[i] - c[j] \leq (b-\delta)x_{ij1} + bx_{ij2}  + Ux_{ij3}\right)\] gdzie $L=-m, U=m, \delta=0.1, b=0$
+	\[(\forall i,j \in [n])\left(i < j \implies Lx_{ij1} + bx_{ij2} + (b+\delta)x_{ij3} \leq c_i - c_j \leq (b-\delta)x_{ij1} + bx_{ij2}  + Ux_{ij3}\right)\] gdzie $L=-m, U=m, \delta=0.1, b=0$
 	\[(\forall i,j \in [n])\left(\sum_{k\in \{1,2,3\}}{x_{i,j,k}} = 1\right)\]
 	\item wymuszenie rozłączności zadań na tej samej maszynie
 	\[(\forall i,j \in [n])\left(i < j \implies s_i + M(y_{ij} + (1-x_{ij2})) \geq s_j + p_j\right)\]
 	\[(\forall i,j \in [n])\left(i < j \implies s_j + M((1-y_{ij}) + (1-x_{ij2})) \geq s_i + p_i\right)\]
 	\item wymuszenie zadanego poprzedzania
-	\[(\forall i,j \in [n])\left(i < j \and r_{ij} = 1 \implies s_i + p_i \leq s_j\right)\]
+	\[(\forall i,j \in [n])\left(i < j \land r_{ij} = 1 \implies s_i + p_i \leq s_j\right)\]
 	\item ustawienie $C$ jako ograniczenia górnego na czas zakończenia
 	\[(\forall i \in [n])\left(C \geq s_i + p_i\right)\]
 \end{itemize}
@@ -142,16 +142,61 @@ Po optymalizacji model odpowiada rozwiązaniu,
 	\end{ganttchart}
 \end{figure}
 
-które spełnia zadane założenia i ma wartość funkcji celu $C_{max} = 9$.
+które spełnia zadane założenia i ma wartość funkcji celu $C = 9$.
 
 \section{Zadanie 4}
 \subsection{Opis Modelu}
+$n$ - liczba zadań, $p$ - liczba odnawialnych zasobów, $N$ - wektor górnych ograniczeń zużycia zasobu $\in \mathbb{R}^p$, $t$ - wektor czasu trwania dla każdego z zadań $\in \mathbb{N}^n$, $r$ - macierz zużycia każdego z zasobów przez każde z zadań $\in \mathbb{R}^{p\times n}$, $u$ - macierz relacji poprzedzania $\in \{0,1\}^{n\times n}$, $T$ - horyzont czasowy (np. suma wszystkich czasów wykonania), wszystkie dane $\geq 0$
 
 \subsubsection{Zmienne decyzyjne}
+\begin{itemize}
+	\item $x$ - binarna macierz momentów rozpoczęcia każdego z zadań $\in \{0,1\}^{n\times T}$
+	\item $C$ - ograniczenie górne czasów zakończenia zadań $\in \mathbb{N}$
+\end{itemize}
 
 \subsubsection{Ograniczenia}
+\begin{itemize}
+	\item Każde zadanie rozpoczyna się tylko raz
+	\[(\forall i \in [n])\left(\sum_{j=1}^{T}{x_{ij}} = 1\right)\]
+	\item wymuszenie zadanego poprzedzania
+	\[(\forall i,j \in [n])\left(i < j \land u_{ij} = 1 \implies \sum_{k=1}^{T}{x_{ik} \cdot (k-1)} + t_i \leq \sum_{k=1}^{T}{x_{jk} \cdot (k-1)}\right)\]
+	\item ustawienie $C$ jako ograniczenia górnego
+	\[(\forall i \in [n])\left(\sum_{k=1}^{T}{x_{ik} \cdot (k-1)} + t_i \leq C\right)\]
+	\item wymuszenie zadanych ograniczeń na zasoby
+	\[(\forall a \in [p], k \in [T])\left(\sum_{i=1}^{n}{\left(\sum_{l=max\{1,k-t_i+1\}}^{k}{x_il}\right)\cdot r_ai} \leq N_a\right)\]
+\end{itemize}
 
 \subsubsection{Funkcja celu}
+Funkcja celu przyjmuje wartość $C$, które staramy się zminimalizować.
 
 \subsection{Wyniki i interpretacja}
+Po optymalizacji model odpowiada rozwiązaniu,
+
+\begin{figure}[H]
+	\begin{ganttchart}[bar/.append style={fill=blue!50},expand chart=\textwidth]{0}{273}
+	\ganttbar{Z1}{0}{50}\\
+	\ganttbar{Z2}{97}{143}\\
+	\ganttbar{Z3}{61}{115}\\
+	\ganttbar{Z4}{51}{96}\\
+	\ganttbar{Z5}{144}{175}\\
+	\ganttbar{Z6}{116}{172}\\
+	\ganttbar{Z7}{159}{173}\\
+	\ganttbar{Z8}{176}{237}\\
+	\ganttvrule{}{50}
+	\ganttvrule{}{60}
+	\ganttvrule{}{96}
+	\ganttvrule{}{115}
+	\ganttvrule{}{143}
+	\ganttvrule{}{158}
+	\ganttvrule{}{172}
+	\ganttvrule{}{173}
+	\ganttvrule{}{175}
+	\end{ganttchart}
+\end{figure}
+
+które spełnia zadane założenia i ma wartość funkcji celu $C = 237$.
+
+Co warto zauważyć, solver \texttt{Cbc} poradził sobie z zadaniem w 17 sekund, w przeciwieństwie do \texttt{GLPK}, który nie wyznaczył optimum w rozsądnym czasie.
+
+
 \end{document}
