@@ -4,12 +4,12 @@ Gabriel Budziński
 =#
 
 using JuMP
-import GLPK
+import Cbc
 
 M = 1000
 
 function solve(n, p, w, r)
-    model = Model(GLPK.Optimizer)
+    model = Model(Cbc.Optimizer)
     # task finish times
     @variable(model, c[1:n] >= 0)
     # precedence
@@ -22,9 +22,12 @@ function solve(n, p, w, r)
     @objective(model, Min, sum(c[i]*w[i] for i in 1:n))
     optimize!(model)
     for i in 1:n
-        print("$(value(c[i])) ")
+        println("$(value(c[i] - p[i]))")
     end
 end
 
+p = [3,2,4,5,1]
+r = [2,1,3,1,0]
+w = [1,1,1,1,1]
 
-solve(3, [2,3,2], [1,1,5], [2,3,5])
+solve(5, p, w, r)

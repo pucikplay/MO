@@ -4,7 +4,7 @@ Gabriel Budziński
 =#
 
 using JuMP
-import GLPK
+import Cbc
 
 # get loss of pattern
 function get_loss(pattern, widths, plank_width)
@@ -42,7 +42,7 @@ function gen_patterns(widths, plank_width)
 end
 
 function solve(plank_width, widths, demand, patterns)
-    model = Model(GLPK.Optimizer)
+    model = Model(Cbc.Optimizer)
     widths_no = length(widths)
     patterns_no = length(patterns) ÷ widths_no
     # number of planks cut in each pattern
@@ -53,7 +53,7 @@ function solve(plank_width, widths, demand, patterns)
     optimize!(model)
     for i in 1:patterns_no
         println("$(value(x[i])) $(patterns[:,i])")
-    end
+    ends
 end
 
 plank_width = 22

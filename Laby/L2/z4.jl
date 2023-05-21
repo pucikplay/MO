@@ -36,6 +36,11 @@ function solve(n, p, t, r, u, T)
         print("\n")
     end
     println(value(C))
+    mm = 0
+    for resource in 1:p, time in 1:T
+        mm = max(mm, value(sum(sum(x[i,max(1,time-t[i]+1):time])*r[resource,i] for i in 1:n)))
+    end
+    println(mm)
     println(solve_time(model))
 end
 
