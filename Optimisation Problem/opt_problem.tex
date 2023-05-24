@@ -22,7 +22,7 @@
 
 Weźmy graf nieskierowany $G=(V,E)$ o $n$ wierzchołkach $w \in V$, nieujemnych kosztach $c_e$ krawędzi $e \in E$ oraz liczbę $k \in \mathbb{N}$. Problem k-minimalnego drzewa rozpinającego ($\textit{ang.}$ kMST - $k$-minimal spanning tree, MSkT - minimal spanning $k$-tree) polega na poszukiwaniu drzewa w $G$ o minimalnym koszcie, w które wchodzi co najmniej $k$ wierzchołków $G$. Problem ten jest NP-trudny nawet dla $V$ należących do płaszczyzny Euklidejskiej. Problem ten jest silnie związany z innym, występującym we wcześniejszych latach w literaturze \cite{k_card_trees} - minimum weight $k$-cardinality tree, którego rozwiązaniem jest znalezienie w grafie $G$ poddrzewa o $k$ krawędziach.
 
-\section{$k$-cardinality tree}
+\section{\textit{k}-cardinality tree}
 
 \subsection{Opis problemu}
 Weźmy graf $G = (V,E)$ ze zbiorem wierzchołków $V$ i krawędzi $E$. Moce zbiorów $V$ i $E$ to odpowiednio $n = |V|$ oraz $m = |E|$. Dla każdej krawędzi $e \in E$ dana jest waga $w(e) \in \mathbb{R}$, a waga zbioru $E' \subseteq E$ jest definiowana jako $\sum_{e \in E'}{w(e)}$.
@@ -67,11 +67,11 @@ Powyższy problem pojawia się w najmie pól naftowych \cite{oil_fields}. Rząd 
   \caption{Graf $G$} \label{fig:G1}
 \end{figure}
 
-\subsection{Złożoność problemu $k$-CARD TREE}
+\subsection{Złożoność problemu \textit{k}-CARD TREE}
 
 Pokażemy, że problem drzewa Steinera, który jest powszechnie znanym z bycia silnie NP-trudnym \cite{steiner}, może być zredukowany do $k$-CARD TREE. W uprzednim problemie zadany jest podzbiór $S \subseteq V$ i próbujemy znaleźć drzewo Steinera o minimalnej wadze, czyli drzewo $T$ w $G$ takie, że $S \subseteq V(T)$ oraz $w(T)$ jest najmniejsza. Dowód redukcji znajduje się w pracy \cite{k_card_trees}.
 
-\subsection{Postępy w znajdywaniu rozwiązań}
+\subsection{Najnowsze metody poszukiwania rozwiązań}
 
 \subsubsection{Przeszukiwanie sąsiedztwa}
 
@@ -89,16 +89,28 @@ Powyższa metoda porównana została ze standardowym VNS oraz dwoma implementacj
 
 W pracy \cite{branch_and_bound} rozszerząjącej podejścia \textit{branch-and-bound} i \textit{branch-and-cut} odpowiednio z prac \cite{integer} oraz \cite{fast} rozważany jest ukorzeniona wersja problemu $k$-CARD TREE, zwana dalej RKCTP, gdzie zadany jest wierzchołek $r \in V$, a rozwiązanie musi zawierać $r$. 
 
-Celem zapronowanej w pracy metody jest rozwiązanie $k$-CARD TREE jako sekwencji $n-k+1$ nierosnących podproblemów RKCTP. Metoda bazowana jest na następującym pomyśle: mając zadany wierzchołek $v \in V$, weźmy $G' = G - v$. $k$-CARD TREE w $G$ (którego rozwiązanie przedstawmy jako $k$-CARD TREE($G$)) zawiera wierzchołek $v$ lub nie. Jeśli $k$-CARD TREE($G$) zawiera $v$, to problem zredukowany jest od RKCTP zakorzenionego w $v$ (którego optymalne rozwiązanie przedstawmy jako RKCTP($G,v$)). W przeciwnym przypadku $v$ nie należy do optymalnego rozwiązania $k$-CARD TREE w $G$ i może być odrzycony. Ta obserwacja prowadzi do następujące
+Celem zapronowanej w pracy metody jest rozwiązanie $k$-CARD TREE (zwanego tu KCTP) jako sekwencji $n-k+1$ nierosnących podproblemów RKCTP. Metoda bazowana jest na następującym pomyśle: mając zadany wierzchołek $v \in V$, weźmy $G' = G - v$. KCTP w $G$ (którego rozwiązanie przedstawmy jako KCTP($G$)) zawiera wierzchołek $v$ lub nie. Jeśli KCTP($G$) zawiera $v$, to problem zredukowany jest od RKCTP zakorzenionego w $v$ (którego optymalne rozwiązanie przedstawmy jako RKCTP($G,v$)). W przeciwnym przypadku $v$ nie należy do optymalnego rozwiązania KCTP w $G$ i może być odrzycony. Ta obserwacja prowadzi do następującego wniosku:
 
+\[KCTP(G) = min\{RKCTP(G,v), KCTP(G')\}\]
 
-\section{$k$-spanning tree}
+Problem KCTP został więc sprowadzony do sekwencji podproblemów RKCTP, które będą rozwiązywane metodą \textit{branch-and-bound}. Waskie ograniczenia na optymalne rozwiązanie RKCTP z pracy \cite{rooted} oraz prosta i wydajna strategia rozgałęzień są kluczowe do minimalizacji kosztów przeszukiwania.
+Aby rozwiązać RKCTP metodą \textit{branch-and-bound} definiujemy podproblem $P$ na zbiorach krawędzi $(S_1, S_0)$. Zbiór $S_1$ jest złożony z krawędzi drzewa zakorzenionego w $r$, zwanych \textit{ustalonymi krawędziami}. Zbiór $S_0$ jest zbiorem \textit{zakazanych krawędzi}. $S_1$ jest rozwiązaniem $P$ jeśli ma dokładnie $k$ krawędzi i nie ma żadnych krawędzi z $S_0$. W podproblemie $P$, jeśli $S_1$ jest rozwiązaniem to $P$ jest podproblemem terminalnym w drzewie przeszukiwań. W przeciwnym przypadku, jeśli $E\backslash(S_1 \cup S_0)$ jest niepusty to wybieramy krawędź $e$ z tego zbioru taką, że $S_1 \cup \{e\}$ też jest drzewem oraz definiujemy dwa nowe podproblemy: krawędź $e$ dodajemy do zbiorów $S_1$ albo $S_0$. Poprzez te dwie operacje podczas kroku rozgałęziania tworzone są dwa nowe podproblemy RKCTP takie, że optymalne osiągalne rozwiązanie $P$ istnieje tylko w jednej z gałęzi. W tej metodzie rozważaną krawędzią $e$ jest krawędź z $E\backslash(S_1 \cup S_0)$ o minimalnej wadze. Ponadto strategią wyboru gałęzi jest \textit{depth-first-search}.
+
+Podczas testów metodę porównano z dwoma innymi dającymi rozwiązanie KCTP lub jego ograniczenie dolne: $k$ pierwszych kroków algorytmu Kruskala \cite{kruskal} oraz ogranicznie Kataoka'i \cite{rooted}. Zaproponowana w pracy metoda działała lepiej od obydwu wymienionych, częściej zwracając rozwiązanie optymalne oraz dając lepsze ograniczenia dolne.
+
+\section{\textit{k}-spanning tree}
 
 \subsection{Heurystyki}
 
+
+
 \subsection{Algorytm hybrydowy: tabu search i kolonia mrówek}
 
-\subsection{$k$-spanning tree na okręgach}
+
+
+\subsection{\textit{k}-spanning tree na okręgach}
+
+
 
 \newpage
 
