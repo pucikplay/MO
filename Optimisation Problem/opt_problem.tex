@@ -1,6 +1,6 @@
-\documentclass{article}
+\documentclass[12pt]{article}
 \usepackage[english]{babel}
-\usepackage[letterpaper,top=2cm,bottom=2cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
+\usepackage[letterpaper,top=3cm,bottom=3cm,left=3cm,right=3cm,marginparwidth=1.75cm]{geometry}
 \usepackage{amsmath}
 \usepackage{amssymb}
 \usepackage{graphicx}
@@ -10,7 +10,7 @@
 \usepackage{float}
 \usepackage[table]{xcolor}
 \usepackage{tikz}
-\usepackage{floatrow}
+% \usepackage{floatrow}
 
 \title{Problem k-minimalnego drzewa rozpinającego}
 \author{Gabriel Budziński\\254609}
@@ -27,46 +27,32 @@ Weźmy graf nieskierowany $G=(V,E)$ o $n$ wierzchołkach $w \in V$, nieujemnych 
 \subsection{Opis problemu}
 Weźmy graf $G = (V,E)$ ze zbiorem wierzchołków $V$ i krawędzi $E$. Moce zbiorów $V$ i $E$ to odpowiednio $n = |V|$ oraz $m = |E|$. Dla każdej krawędzi $e \in E$ dana jest waga $w(e) \in \mathbb{R}$, a waga zbioru $E' \subseteq E$ jest definiowana jako $\sum_{e \in E'}{w(e)}$.
 
-Drzewem w $G$ jest podgraf $T = (V(T), E(T))$ taki, że $T$ nie zawiera cykli i jest spójny. Będziemy używać notacji $w(T)$ opisując $w(E(T))$. Moc $|T|$ zbioru $T$ jest mocą $E(T)$. Dla zadanego $k$, gdzie $1 \leq k \leq n-1$ $k$-cardinality tree jest drzewem $T$ o mocy $|T| = k$. Jeśli $k = n-1$ to $T$ jest drzewem rozpinającym $G$. Zadane jest znalezienie takiego $T$, że $w(T) = \min_{T' \subseteq G}{w(T')}$. Dla $k = n-1$ takim $T$ jest minimalne drzewo rozpinające, które można znaleźć w czasie wielomianowym algorytmem zachłannym (Kruskal \cite{kruskal}, Prim \cite{prim}). Dla ustalonego $k$ problem jest różnież rozwiązywalny przez wyliczenie możliwych drzew.
+Drzewem w $G$ jest podgraf $T = (V(T), E(T))$ taki, że $T$ nie zawiera cykli i jest spójny. Będziemy używać notacji $w(T)$ opisując $w(E(T))$. Moc $|T|$ zbioru $T$ jest mocą $E(T)$. Dla zadanego $k$, gdzie $1 \leq k \leq n-1$ $k$-cardinality tree jest drzewem $T$ o mocy $|T| = k$. Jeśli $k = n-1$ to $T$ jest drzewem rozpinającym $G$. Zadane jest znalezienie takiego $T$, że $w(T) = \min_{T' \subseteq G}{w(T')}$. Dla $k = n-1$ takim $T$ jest minimalne drzewo rozpinające, które można znaleźć w czasie wielomianowym algorytmem zachłannym (Kruskal \cite{kruskal}, Prim \cite{prim}). Dla ustalonego $k$ problem jest różnież rozwiązywalny przez wyliczenie wszystkich możliwych drzew. Jeśli mamy wagi zadane są dla wierzchołków, to możemy rozpatrywać graf krawędziowy do zadanego grafu $G$.
 
 \subsection{Zastosowania w praktyce}
 
-Powyższy problem pojawia się w najmie pól naftowych \cite{oil_fields}. Rząd ma następującą regułę "50\%" obejmującą morskie pola naftowe: jeśli firma najęła pole naftowe ma ona ustaloną liczbę lat, dajmy na to 5, aby eksploatować to pole. Po upływie tego czasu firma ma obowiązek zwrócić co najmniej 50\% najętego pola. Ponadto, oddawana część pola musi być spójna. Oczywistym celem z punktu widzenia firmy jest zwrot częsci o najmniejszej wartości (i zachowanie części o wartości największej). W pracy \cite{oil_fields} pola naftowe mają postać prostokąta podzielonego na mniejsze kwadraty. Firma, która najmuje pole ma 5 lat na zebranie informacji o wartości $w_i$ każdego z podkwadratów. Część pola, którą firma odda odpowiada podzbiorowi co najmniej 50\% podkwadratów, który jest spójny i ma najmniejszą całkowitą wartość wszystkich $w_i$. Aby zamodelować spójność weźmy graf dualny do oczekiwanego, który jest grafem kratowym.
+Powyższy problem pojawia się w najmie pól naftowych \cite{oil_fields}. Rząd ma następującą regułę "50\%" obejmującą morskie pola naftowe: jeśli firma najęła pole naftowe ma ona ustaloną liczbę lat, dajmy na to 5, aby eksploatować to pole. Po upływie tego czasu firma ma obowiązek zwrócić co najmniej 50\% najętego pola. Ponadto, oddawana część pola musi być spójna. Oczywistym celem z punktu widzenia firmy jest zwrot częsci o najmniejszej wartości (i zachowanie części o wartości największej). W pracy \cite{oil_fields} pola naftowe mają postać prostokąta podzielonego na mniejsze kwadraty. Firma, która najmuje pole ma 5 lat na zebranie informacji o wartości $w_i$ każdego z podkwadratów. Część pola, którą firma odda odpowiada podzbiorowi co najmniej 50\% podkwadratów, który jest spójny i ma najmniejszą całkowitą wartość wszystkich $w_i$. Aby zamodelować spójność weźmy graf liniowy do oczekiwanego, który jest grafem kratowym (patrz \ref{fig:G1}). Spójny podzbiór kwadratów w prostokącie odpowiada spójnemu podgrafowi $G$. Ponieważ wagi kwadratów odpowiadają wagom wierzchołków $G$, to rozwiązując problem $k$-CARD TREE w grafie wierzchołkowym do $G$, gdzie $k \geq \frac{n}{2}$ mamy optymalną część pola do zwrotu.
 
-\begin{figure}
-    \ffigbox{%
-      \rule{3cm}{3cm}%
-    }{%
-      \caption{A figure}%
-    }
-    \capbtabbox{%
-      \begin{tabular}{cc} \hline
-      Author & Title \\ \hline
-      Knuth & The \TeX book \\
-      Lamport & \LaTeX \\ \hline
-      \end{tabular}
-    }{%
-      \caption{A table}%
-    }
-\end{figure}
-
-\begin{table}
-    \centering
-    \begin{tabular}{|c|c|c|c|c|}\hline
-        1 & 2 & 3 & 4 & 5\\\hline
-        6 & 7 & 8 & 9 & 10\\\hline
-        11 & 12 & 13 & 14 & 15\\\hline
-    \end{tabular}
+\begin{table}[H]
+  \centering
+  \begin{tabular}{|c|c|c|c|c|}\hline
+      1 & 2 & 3 & 4 & 5\\\hline
+      6 & 7 & 8 & 9 & 10\\\hline
+      11 & 12 & 13 & 14 & 15\\\hline
+  \end{tabular}
+  \caption{Pole naftowe} \label{tab:T1}
 \end{table}
 
-\begin{tikzpicture}
+\begin{figure}[H]
+  \centering
+  \begin{tikzpicture}
     % Set the size of each node
     \newcommand{\nodesize}{0.5cm}
   
     % Draw the grid graph
     \foreach \x in {0,1,2,3,4}
       \foreach \y in {0,1,2}
-        \node [fill,minimum size=\nodesize] at (\x,\y) {};
+        \node [draw,fill,minimum size=\nodesize] at (\x,\y) {};
   
     % Connect the nodes horizontally
     \foreach \x in {0,1,2,3,4}
@@ -76,10 +62,43 @@ Powyższy problem pojawia się w najmie pól naftowych \cite{oil_fields}. Rząd 
     % Connect the nodes vertically
     \foreach \x [count=\nextx from 1] in {0,1,2,3}
       \foreach \y in {0,1,2}
-        \draw (\x,\y) -- (\nextx,\y);      
-\end{tikzpicture}
+        \draw (\x,\y) -- (\nextx,\y);     
+  \end{tikzpicture}
+  \caption{Graf $G$} \label{fig:G1}
+\end{figure}
+
+\subsection{Złożoność problemu $k$-CARD TREE}
+
+Pokażemy, że problem drzewa Steinera, który jest powszechnie znanym z bycia silnie NP-trudnym \cite{steiner}, może być zredukowany do $k$-CARD TREE. W uprzednim problemie zadany jest podzbiór $S \subseteq V$ i próbujemy znaleźć drzewo Steinera o minimalnej wadze, czyli drzewo $T$ w $G$ takie, że $S \subseteq V(T)$ oraz $w(T)$ jest najmniejsza. Dowód redukcji znajduje się w pracy \cite{k_card_trees}.
+
+\subsection{Postępy w znajdywaniu rozwiązań}
+
+\subsubsection{Przeszukiwanie sąsiedztwa}
+
+W pracy \cite{neighbourhood} podano wariant metody \textit{Variable neighbourhood search} (VNS \cite{vns}) przygotowany do problemu $k$-CARD TREE. Przestrzeń rozwiązań $\mathcal{S}_k$, będąca zbiorem wszystkich podrzew $T$ grafu $G$ o dokładnie $k$ krawędziach. Moc tej przestrzeni to $|\mathcal{S}_k| = \binom{n}{k+1} \cdot O(k^k)$. Odległość między dwoma drzewami $T_1$ oraz $T_2$ zdefiniowano jako:
+\begin{itemize}
+  \item $\rho(T_1,T_2) = |E_{T_1} \backslash E_{T_2}| = |E_{T_2} \backslash E_{T_1}|$
+  \item $\eta(T_1,T_2) = |V_{T_1} \backslash V_{T_2}| = |V_{T_2} \backslash V_{T_1}|$
+\end{itemize}
+
+Wprowadzona przez Uroševića, Brimberga i Mladenovića metoda \textit{Variable neighbourhood decomposition search} (VDNS \cite{vnds}) rozszerza VNS na dwupoziomowy VNS po dekompozycji problemu.
+
+Powyższa metoda porównana została ze standardowym VNS oraz dwoma implementacjami tabu search (TS-1 \cite{ts1}, TS-2 \cite{ts2}). Testy przeprowadzone zostały dla $n=|V|$ z przedziału [500,5000]. Na podstawie eksperymentów wykazano lepsze od konkurencji wyniki algorytmu VNDS, zarówno w postaci rozwiązań bliżej optimum, jak i krótszego czasu wykonania.
+
+\subsubsection{Branch-and-bound}
+
+W pracy \cite{branch_and_bound} rozszerząjącej podejścia \textit{branch-and-bound} i \textit{branch-and-cut} odpowiednio z prac \cite{integer} oraz \cite{fast} rozważany jest ukorzeniona wersja problemu $k$-CARD TREE, zwana dalej RKCTP, gdzie zadany jest wierzchołek $r \in V$, a rozwiązanie musi zawierać $r$. 
+
+Celem zapronowanej w pracy metody jest rozwiązanie $k$-CARD TREE jako sekwencji $n-k+1$ nierosnących podproblemów RKCTP. Metoda bazowana jest na następującym pomyśle: mając zadany wierzchołek $v \in V$, weźmy $G' = G - v$. $k$-CARD TREE w $G$ (którego rozwiązanie przedstawmy jako $k$-CARD TREE($G$)) zawiera wierzchołek $v$ lub nie. Jeśli $k$-CARD TREE($G$) zawiera $v$, to problem zredukowany jest od RKCTP zakorzenionego w $v$ (którego optymalne rozwiązanie przedstawmy jako RKCTP($G,v$)). W przeciwnym przypadku $v$ nie należy do optymalnego rozwiązania $k$-CARD TREE w $G$ i może być odrzycony. Ta obserwacja prowadzi do następujące
+
 
 \section{$k$-spanning tree}
+
+\subsection{Heurystyki}
+
+\subsection{Algorytm hybrydowy: tabu search i kolonia mrówek}
+
+\subsection{$k$-spanning tree na okręgach}
 
 \newpage
 
