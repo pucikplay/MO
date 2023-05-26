@@ -102,7 +102,36 @@ Podczas testów metodę porównano z dwoma innymi dającymi rozwiązanie KCTP lu
 
 \subsection{Heurystyki}
 
+W pracy \cite{heuristis} rozpatrzono trzy podejścia heurystyczne do rozwiązywania problemu MSkT.
 
+\subsubsection{Heurystyki oparte na podejściu \textit{Greedy}}
+
+\begin{itemize}
+  \item \textbf{Algorytm GreedyA}\\
+        Algorytm opraty jest na idei algorytmu Prima \cite{prim}. Na początku wybieramy krawędź o najmniejszej wadze w $G$. Następnie konstruujemy klikę startową $W$ o rozmiarze $k+1$ poprzez dodawanie do $W$ wierzchołka $m^*$ o minimalnej sumie wag $\sum_{j \in V(W)}{w(m^*,j)}$ wraz z tymi krawędziami. Po otrzymaniu kliki wykonujemy algortym z pracy \cite{greedy}, który domyślnie startował z losowej kliki.
+\end{itemize}
+
+\subsubsection{Heurystyki oparte o progrmowanie dynamiczne}
+
+\begin{itemize}
+  \item \textbf{Algorytm DPA}\\
+        Algorytm składa się $|V| + 1$ kroków, przez pierwsze $k$ kroków rozbudowujemy drzewo poprzez dodawanie kolejnych wierzchołków minimalizując sumę wag krawędzi do niego prowadzących z aktualnego drzewa. W pozostałych krokach wyznaczamy $k$-klikę minimalną pod względem sumy wag krawędzi do każdego z wierzchołków. W $|V| + 1$ kroku wyznaczamy znalezione drzewo.
+\end{itemize}
+
+\subsubsection{Heurystyki oparte o iteratywną poprawę rozwiązania wyjściowego}
+
+\begin{itemize}
+  \item \textbf{Procedura CONNECT}\\
+        Procedura łącząca dwie kliki o rozmiarze $\leq k$ minimalizując przy tym wagę dodawanych krawędzi.
+  \item \textbf{Procedura COMPLEMENT}\\
+        Procedura tworząca $k$-drzewo z częściowego $k$-drzewa, przez które rozumiemy graf posiadający wszystkie wierzchołki oraz podzbiór krawędzi $k$-drzewa. Klu procedury jest dodawanie krawędzi do częściowego $k$-drzewa minimalizując przy tym wagę tych krawędzi tak, aby konstruowany graf był $k$-drzewem.
+  \item \textbf{Algorytm RA}\\
+        Algorytm polega na rekursywnym konstruowaniu nowych rozwiązań z rozwiązania wyjściowego na podstawie klik zawierąjących się w tym rozwiązaniu przy pomocy procedur COMPLEMENT oraz CONNECT.
+  \item \textbf{Algorytm FRA}\\
+        Algorytm rozszerzający RA, w którym przy każdym rekursywnym wywołaniu jedynie n klik o najmniejszej wadze jest branych pod uwagę przy kolejnych krokach algorytmu co przyśpiesza poszukiwania optymalnego drzewa.
+\end{itemize}
+
+Na podstawie badań czasu wykonania oraz jakości znalezionego rozwiązano wykazano, że algorytm RA startujący z rozwiązania obliczonego przy pomocy DPA okazał się bardzo kompetatywny ze względu na szybki czas wykonania dla małego $k$ oraz znalezienie optymalnego $k$-drzewa rozpinającego dla wszystkich wygenerowanych instancji problemu. Dla znacznych $k$ plecono stosowanie algortym FRA bazujący na rozwiązaniu generowanym przez GreedyA ze względu na niewielki wzrost czasu obliczeń wraz ze wzrostem $k$ w porównianiu do RA-DPA.
 
 \subsection{Algorytm hybrydowy: tabu search i kolonia mrówek}
 
