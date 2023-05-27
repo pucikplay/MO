@@ -135,11 +135,31 @@ Na podstawie badań czasu wykonania oraz jakości znalezionego rozwiązano wykaz
 
 \subsection{Algorytm hybrydowy: tabu search i kolonia mrówek}
 
+W pracy \cite{tabu_search} wypracowano ulepszenie algorytmu \textit{tabu search} (TS) dla problemu $k$-drzewa rozpinającego. TS z pracy \cite{tabu_search} wykazuje się skutecznym znajdywaniem dobrego rozwiązania w relatywnie małej przestrzeni lokalnej, jednakże możliwości eksploracji poza tę przestrzeń są niewielkie. Tę własność posiada natomiast algortym \textit{ant colony optimisation} (ACO) opisany w pracy \cite{metaheuristic}, co wywnioskowano po znakomitych wynikach dla małych $k$.
+Zaproponowany algorytm prezentuje się następująco:
 
+\begin{itemize}
+  \item \textit{Krok 1 (Generowanie rozwiązania wyjściowego).} Rozpoczynając od losowego wierzchołka stosujemy algorytm Prima \cite{prim} aż uzyskamy $k$-poddrzewo.
+  \item \textit{Krok 2 (Inicjalizacja parametrów).} Inicjalizujemy listę \textit{tabu}, jej czas pamiętania $tl_{len}$ oraz kryteria aspiracji.
+  \item \textit{Krok 3 (Lokalne przeszukiwanie tabu-search).} Przeszukujemy sąsiedztwo używając TS i zapisujemy rozwiązania minimalne. Jeśli aktualne $tl_{len}$ przekroczy $tt_{max}$ przechodzimy do stanu 4. W przeciwnym przypadku powracamy do stanu 2.
+  \item \textit{Stan 4 (Procedura dywersyfikacyjna oparta na kolonii mrówek).} Rozszerzamy obszar przeszukiwań na podstawie ACO aby zwiększyć różnorodność rozwiązań.
+  \item \textit{Stan 5 (Ostateczny).} Jeśli przekroczyliśmy dozwolony czas obliczeniowy, kończymy algorytm i zwracamy rozwiązanie. W przeciwnym przypadku powracamy do stanu 2. 
+\end{itemize}
+
+Testy numeryczne opisane w pracy wykazały lepsze zachowanie algorytmu od algorytmów, na których bazował.
 
 \subsection{\textit{k}-spanning tree na okręgach}
 
+Na koniec przyjrzyjmy się pracy \cite{circles}, w której rozpatrywany jest szczególny przypadek MSkT, w którym wierzchołki grafu leżą na okręgu. Uprzednio R. Ravi \cite{ravi} pokazał między innymi, że jeśli wierzchołki grafu leżą na krawędzi figury wypukłej, a wagi krawędzi odpowiadają euklidejskim odległościom, to MSkT można rozwiązać w czasie wielomianowym stosując programowanie dynamiczne. Zauważono, że krawędzie każdego minimalnego drzewa rozpinającego o $k$ wierzchołkach nie mogą się wzajemnie przecinać, a przez to rozwiązanie optymalne MSkT dla wielokąta może być skonstruowane z rozwiązń pomniejszych wielokątów otrzymanych przez triangulację wielokąta wyjściowego. W kolejnej części zaproponowany jest algorytm dla okręgu, pod warunkiem, że żadna para wierzchołków nie leży na tej samej średnicy.
+Knecht i Jungnickel budując na pomysłach Ravi'ego przedstawiają bardziej ogólny algorytm, który nie wymaga powyższego założnia i ma złożoność obliczeniową rzędu $O(n^2k)$. Klu algorytmu jest poszukiwanie najkrótszej ścieżki zawierającej $k$ wierzchołków, która nie zmienia kierunku po okręgu. Poprawność tego spostrzeżenia podpierją dwa lematy:
+\begin{itemize}
+  \item Żaden z wierzchołków MSkT nie ma stopnia większego niż 2.
+  \item Najkrótsza ścieżka o $k$ wierzchołkach z $v_{i_1}$ do $v_{i_k}$ wraz z krawędzią $v_{i_1}v_{i_k}$ tworzą $k$-kąt.
+\end{itemize}
 
+\section{Podumowanie}
+
+Wyżej cytowane prace składają się na aktualny stan wiedzy o problemie $k$-drzewa rozpinającego.
 
 \newpage
 
