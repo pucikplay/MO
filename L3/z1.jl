@@ -16,8 +16,8 @@ end
 function calcMakespan(times)
     n = length(times[:,1])
     m = length(times[1,:])
-    greedy_schedule = greedySchedule(times)
-    println(greedy_schedule)
+    alpha = greedySchedule(times)
+    println(alpha)
 end
 
 
