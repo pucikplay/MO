@@ -35,13 +35,6 @@ function greedySchedule(times)
     return maximum(makespans)
 end
 
-function calcMakespan(times)
-    n = length(times[:,1])
-    m = length(times[1,:])
-    alpha = greedySchedule(times)
-    return alpha
-end
-
 function checkFeasibility(times, T)
     n = length(times[:,1])
     m = length(times[1,:])
@@ -126,7 +119,7 @@ end
 function getMakespan(filename)
     times = readTimes(filename)
 
-    alpha = calcMakespan(times)
+    alpha = greedySchedule(times)
     # println(alpha)
     T_min, result = binsearch(alpha, times)
     # println(T_min)
@@ -139,6 +132,7 @@ function getMakespan(filename)
 end
 
 instances = readdir("instances", join = true)
+time = @elapsed (makespan = getMakespan(instances[1]))
 
 for instance in instances
     name = split(split(instance,'/')[2],'.')[1]
