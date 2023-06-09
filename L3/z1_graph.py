@@ -27,4 +27,6 @@ if __name__ == "__main__":
     plt.ylabel("Time of execution")
     plt.legend()
     plt.savefig("L3/times.png", dpi=300)
+    plt.ylim((-.5,10))
+    plt.savefig("L3/times_lim.png", dpi=300)
     plt.close()
