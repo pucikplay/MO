@@ -1,6 +1,10 @@
+#=
+Gabriel Budziński
+254609
+=#
+
 using JuMP
 
-import Cbc
 import HiGHS
 
 function readTimes(filename)
@@ -139,6 +143,6 @@ instances = readdir("instances", join = true)
 for instance in instances
     name = split(split(instance,'/')[2],'.')[1]
     # println(name)
-    makespan = getMakespan(instance)
-    println(name, ',', Int(makespan))
+    time = @elapsed (makespan = getMakespan(instance))
+    println(name, ',', Int(makespan), ',', time)
 end
